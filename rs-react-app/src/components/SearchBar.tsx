@@ -27,6 +27,12 @@ class SearchBar extends Component<SearchBarProps, SearchState> {
     this.props.onSearch(inputTrimmed);
   };
 
+  onEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      this.onButtonClick();
+    }
+  };
+
   render() {
     return (
       <div className="search">
@@ -35,6 +41,7 @@ class SearchBar extends Component<SearchBarProps, SearchState> {
           placeholder="Search for cats"
           value={this.state.input}
           onChange={this.onInputChange}
+          onKeyDown={this.onEnterPress}
         />
         <button className="search-button" onClick={this.onButtonClick}>
           Search
