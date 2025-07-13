@@ -10,7 +10,7 @@ class Card extends Component<CardProps> {
     const { name, description } = this.props;
     return (
       <div className="card">
-        <h3>{name}</h3>
+        <h3 className="card-title">{name}</h3>
         <p>{description}</p>
       </div>
     );
