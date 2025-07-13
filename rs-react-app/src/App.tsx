@@ -3,6 +3,8 @@ import './App.css';
 import SearchBar from './components/SearchBar';
 import CardList, { type Breed } from './components/CardList';
 import Spinner from './components/Spinner';
+import ErrorButton from './components/ErrorButton';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const API_URL = `https://api.thecatapi.com/v1/breeds`;
 const API_KEY =
@@ -82,7 +84,10 @@ class App extends Component<AppProps, AppState> {
         <h1>Breeds Cat-alog</h1>
         <SearchBar input={this.loadSearchTerm()} onSearch={this.fetchData} />
         <Spinner loading={this.state.loading} />
-        <CardList data={this.state.breeds} />
+        <ErrorBoundary>
+          <CardList data={this.state.breeds} />
+          <ErrorButton />
+        </ErrorBoundary>
       </div>
     );
   }
