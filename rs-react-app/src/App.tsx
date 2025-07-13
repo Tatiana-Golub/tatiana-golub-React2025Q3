@@ -2,6 +2,7 @@ import { Component } from 'react';
 import './App.css';
 import SearchBar from './components/SearchBar';
 import CardList, { type Breed } from './components/CardList';
+import Spinner from './components/Spinner';
 
 const API_URL = `https://api.thecatapi.com/v1/breeds`;
 const API_KEY =
@@ -56,9 +57,8 @@ class App extends Component<AppProps, AppState> {
       })
       .then((data: Breed[]) => {
         const filtered = input
-          ? data.filter((breed, index) => {
-              if (index < this.limit)
-                return breed.name.toLowerCase().includes(input.toLowerCase());
+          ? data.filter((_breed, index) => {
+              if (index < this.limit) return true;
             })
           : data;
         this.setState({ breeds: filtered, loading: false });
@@ -81,6 +81,7 @@ class App extends Component<AppProps, AppState> {
       <div className="app">
         <h1>Breeds Cat-alog</h1>
         <SearchBar input={this.loadSearchTerm()} onSearch={this.fetchData} />
+        <Spinner loading={this.state.loading} />
         <CardList data={this.state.breeds} />
       </div>
     );
