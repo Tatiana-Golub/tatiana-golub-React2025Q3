@@ -31,11 +31,9 @@ body {
 h1 {
   font-size: 3rem;
   letter-spacing: 0.9px;
-  background: linear-gradient(
-    90deg,
-    rgba(249, 211, 180, 1) 0%,
-    rgba(249, 211, 180, 0.5) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(249, 211, 180, 1) 0%,
+      rgba(249, 211, 180, 0.5) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -130,34 +128,41 @@ h1 {
   background-color: wheat;
 }
 
-.loader {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    background: linear-gradient(0deg, #FFFFFF 50%, rgba(249, 211, 180) 100%);
-    animation: spin 1s linear infinite;
-    margin-right: 10%;
+.error-message {
+  color: #FF0000;
+  text-align: center;
+  font-size: 1.8rem;
 }
+
+.loader {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: linear-gradient(0deg, #FFFFFF 50%, rgba(249, 211, 180) 100%);
+  animation: spin 1s linear infinite;
+}
+
 .inner-circle {
-    width: 80%;
-    height: 80%;
-    background-color: #212426;
-    border-radius: 50%;
+  width: 80%;
+  height: 80%;
+  background-color: #212426;
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
   }
 
-  @keyframes spin {
-    from {
-      transform: rotate(0);
-    }
-    to{
-      transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
   }
+}
 
-  @media (max-width: 550px) {
+@media (max-width: 550px) {
   .search {
     max-width: 30rem;
     padding: 1rem 1.25rem;

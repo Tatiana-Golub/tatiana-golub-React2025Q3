@@ -22,9 +22,9 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <h1>
+        <p className="error-message">
           Something bad happened. <br /> Reload the page.
-        </h1>
+        </p>
       );
     }
 

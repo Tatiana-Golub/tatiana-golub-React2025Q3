@@ -79,13 +79,19 @@ class App extends Component<AppProps, AppState> {
   }
 
   render() {
+    const { error } = this.state;
+
     return (
       <div className="app">
         <h1>Breeds Cat-alog</h1>
         <SearchBar input={this.loadSearchTerm()} onSearch={this.fetchData} />
         <Spinner loading={this.state.loading} />
         <ErrorBoundary>
-          <CardList data={this.state.breeds} />
+          {error ? (
+            <p className="error-message">Error: {error}</p>
+          ) : (
+            <CardList data={this.state.breeds} />
+          )}
           <ErrorButton />
         </ErrorBoundary>
       </div>
