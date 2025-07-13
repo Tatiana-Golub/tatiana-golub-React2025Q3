@@ -134,6 +134,12 @@ h1 {
   font-size: 1.8rem;
 }
 
+.empty-search-message {
+  color: wheat;
+  text-align: center;
+  font-size: 1.8rem;
+}
+
 .loader {
   width: 40px;
   height: 40px;

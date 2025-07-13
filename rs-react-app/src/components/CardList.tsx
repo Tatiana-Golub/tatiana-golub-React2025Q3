@@ -14,6 +14,9 @@ interface CardListProps {
 class CardList extends Component<CardListProps> {
   render() {
     const { data: items } = this.props;
+    if (items.length === 0)
+      return <p className="empty-search-message">Nothing in search.</p>;
+
     return (
       <div className="card-list">
         {items.map((item) => (
