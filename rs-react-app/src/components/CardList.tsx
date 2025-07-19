@@ -7,7 +7,7 @@ export interface Breed {
   description: string;
 }
 
-interface CardListProps {
+export interface CardListProps {
   data: Breed[];
 }
 
