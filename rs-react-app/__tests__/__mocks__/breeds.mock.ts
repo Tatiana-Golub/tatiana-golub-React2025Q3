@@ -1,4 +1,4 @@
-import type { Breed } from "../../src/components/CardList";
+import type { Breed } from '../../src/components/CardList';
 
 export const mockBreeds: Breed[] = [
   { id: '1', name: 'Persian', description: 'Sweet and gentle' },
