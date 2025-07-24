@@ -21,7 +21,7 @@ describe('Error Button', () => {
     expect(button).toBeInTheDocument();
   });
 
-  it(`throw error when ErrorButton is clicked and show fallback UI`, async () => {
+  it('throw error when ErrorButton is clicked and show fallback UI', async () => {
     render(
       <ErrorBoundary>
         <ErrorButton />
