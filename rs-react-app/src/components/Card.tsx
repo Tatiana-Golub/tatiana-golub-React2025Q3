@@ -1,20 +1,15 @@
-import { Component } from 'react';
-
 interface CardProps {
   name: string;
   description: string;
 }
 
-class Card extends Component<CardProps> {
-  render() {
-    const { name, description } = this.props;
-    return (
-      <div className="card">
-        <h3 className="card-title">{name}</h3>
-        <p>{description}</p>
-      </div>
-    );
-  }
+function Card({ name, description }: CardProps) {
+  return (
+    <div className="card">
+      <h3 className="card-title">{name}</h3>
+      <p>{description}</p>
+    </div>
+  );
 }
 
 export default Card;

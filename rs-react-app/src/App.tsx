@@ -1,102 +1,87 @@
-import { Component } from 'react';
 import './App.css';
 import SearchBar from './components/SearchBar';
 import CardList, { type Breed } from './components/CardList';
 import Spinner from './components/Spinner';
-import ErrorButton from './components/ErrorButton';
 import ErrorBoundary from './components/ErrorBoundary';
+import { useCallback, useEffect, useState } from 'react';
 
 const API_URL = `https://api.thecatapi.com/v1/breeds`;
 const API_KEY =
   'live_3CbgMb13ZFjtyL22iSqK3JakXhPppFZhgxM52h0cDrmKmGoOZ0s8HUbPRtyn3p6l';
+const LIMIT: number = 5;
+const SEARCH_ITEM_KEY: string = 'searchItem';
 
-interface AppState {
-  searchItem: string;
-  breeds: Breed[];
-  loading: boolean;
-  error: string | null;
-}
+function App() {
+  const [, setSearcItem] = useState('');
+  const [breeds, setBreeds] = useState<Breed[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-interface AppProps {
-  data: string;
-}
+  const loadSearchTerm = useCallback((): string => {
+    return localStorage.getItem(SEARCH_ITEM_KEY) || '';
+  }, []);
 
-class App extends Component<AppProps, AppState> {
-  private limit: number = 5;
-  private SEARCH_ITEM_KEY: string = 'searchItem';
+  const saveSearchTerm = useCallback((term: string) => {
+    localStorage.setItem(SEARCH_ITEM_KEY, term);
+  }, []);
 
-  constructor(props: AppProps) {
-    super(props);
-    this.state = {
-      searchItem: '',
-      breeds: [],
-      loading: false,
-      error: null,
-    };
-  }
+  const fetchData = useCallback(
+    (input: string) => {
+      saveSearchTerm(input);
 
-  componentDidMount() {
-    const savedTerm = this.loadSearchTerm();
-    this.fetchData(savedTerm);
-  }
+      let url = '';
+      if (input === '') url = `${API_URL}?limit=${LIMIT}&page=0`;
+      else url = `${API_URL}/search?q=${input}`;
 
-  fetchData = (input: string) => {
-    this.saveSearchTerm(input);
+      setLoading(true);
+      setError(null);
 
-    let url = '';
-    if (input === '') url = `${API_URL}?limit=${this.limit}&page=0`;
-    else url = `${API_URL}/search?q=${input}`;
-
-    this.setState({ loading: true, error: null });
-    fetch(url, {
-      headers: {
-        'x-api-key': API_KEY,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
+      fetch(url, {
+        headers: {
+          'x-api-key': API_KEY,
+        },
       })
-      .then((data: Breed[]) => {
-        const filtered = input
-          ? data.filter((_breed, index) => {
-              if (index < this.limit) return true;
-            })
-          : data;
-        this.setState({ breeds: filtered, loading: false });
-      })
-      .catch((err) => {
-        this.setState({ error: err.message, loading: false });
-      });
-  };
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then((data: Breed[]) => {
+          const filtered = input
+            ? data.filter((_breed, index) => {
+                if (index < LIMIT) return true;
+              })
+            : data;
+          setBreeds(filtered);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setLoading(false);
+        });
+    },
+    [saveSearchTerm]
+  );
 
-  loadSearchTerm(): string {
-    return localStorage.getItem(this.SEARCH_ITEM_KEY) || '';
-  }
+  useEffect(() => {
+    const savedTerm = loadSearchTerm();
+    setSearcItem(savedTerm);
+    fetchData(savedTerm);
+  }, [fetchData, loadSearchTerm]);
 
-  saveSearchTerm(term: string) {
-    localStorage.setItem(this.SEARCH_ITEM_KEY, term);
-  }
-
-  render() {
-    const { error } = this.state;
-
-    return (
-      <div className="app">
-        <h1>Breeds Cat-alog</h1>
-        <SearchBar input={this.loadSearchTerm()} onSearch={this.fetchData} />
-        <Spinner loading={this.state.loading} />
-        <ErrorBoundary>
-          {error ? (
-            <p className="error-message">Error: {error}</p>
-          ) : (
-            <CardList data={this.state.breeds} />
-          )}
-          <ErrorButton />
-        </ErrorBoundary>
-      </div>
-    );
-  }
+  return (
+    <div className="app">
+      <h1>Breeds Cat-alog</h1>
+      <SearchBar input={loadSearchTerm()} onSearch={fetchData} />
+      <Spinner loading={loading} />
+      <ErrorBoundary>
+        {error ? (
+          <p className="error-message">Error: {error}</p>
+        ) : (
+          <CardList data={breeds} />
+        )}
+      </ErrorBoundary>
+    </div>
+  );
 }
 
 export default App;

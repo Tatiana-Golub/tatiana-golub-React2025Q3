@@ -1,28 +1,23 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
-class ErrorButton extends Component {
-  state = {
-    isClicked: false,
+function ErrorButton() {
+  const [isClicked, setIsClicked] = useState(false);
+
+  const handleClick = () => {
+    setIsClicked(true);
   };
 
-  handleClick = () => {
-    this.setState({
-      isClicked: true,
-    });
-  };
-
-  render() {
-    if (this.state.isClicked === true) {
-      throw new Error('Simulated error.');
-    }
-    return (
-      <div>
-        <button className="error-button" onClick={this.handleClick}>
-          Error Button
-        </button>
-      </div>
-    );
+  if (isClicked === true) {
+    throw new Error('Simulated error.');
   }
+
+  return (
+    <div>
+      <button className="error-button" onClick={handleClick}>
+        Error Button
+      </button>
+    </div>
+  );
 }
 
 export default ErrorButton;
