@@ -31,11 +31,9 @@ body {
 h1 {
   font-size: 3rem;
   letter-spacing: 0.9px;
-  background: linear-gradient(
-    90deg,
-    rgba(249, 211, 180, 1) 0%,
-    rgba(249, 211, 180, 0.5) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(249, 211, 180, 1) 0%,
+      rgba(249, 211, 180, 0.5) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -133,7 +131,8 @@ h1 {
   margin-bottom: 1rem;
 }
 
-.error-button {
+.error-button,
+.back-button {
   margin-top: 5rem;
   background-color: wheat;
 }
@@ -148,6 +147,20 @@ h1 {
   color: wheat;
   text-align: center;
   font-size: 1.8rem;
+}
+
+.about {
+  padding: 2rem;
+  text-align: center;
+}
+
+.about-title {
+  margin: 0 auto 5rem;
+}
+
+.about-description {
+  color: whitesmoke;
+  font-size: 1.3rem;
 }
 
 .loader {
