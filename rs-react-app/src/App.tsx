@@ -6,6 +6,8 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import Pagination from './components/Pagination';
+import AboutLink from './components/AboutLink';
+import { useParams } from 'react-router-dom';
 
 const API_URL = `https://api.thecatapi.com/v1/breeds`;
 const API_KEY =
@@ -15,6 +17,7 @@ const START_PAGE: number = 1;
 const SEARCH_ITEM_KEY: string = 'searchItem';
 
 function App() {
+  const { pageNumber } = useParams();
   const [searchTerm, setSearchTerm] = useLocalStorage(SEARCH_ITEM_KEY, '');
   const [breeds, setBreeds] = useState<Breed[]>([]);
   const [page, setPage] = useState(START_PAGE);
@@ -91,6 +94,7 @@ function App() {
 
   return (
     <div className="app">
+      <AboutLink />
       <h1>Breeds Cat-alog</h1>
       <SearchBar input={searchTerm} onSearch={fetchData} />
       <Spinner loading={loading} />
@@ -98,7 +102,7 @@ function App() {
         {error ? (
           <p className="error-message">Error: {error}</p>
         ) : (
-          <CardList data={filterBreeds()} />
+          <CardList pageNumber={pageNumber || '1'} data={filterBreeds()} />
         )}
         {!loading && hasBreeds() && (
           <Pagination
