@@ -1,10 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import About from '../../src/components/About';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('About', () => {
   it('render title properly', () => {
-    render(<About />);
+    render(
+      <MemoryRouter>
+        <About />
+      </MemoryRouter>
+    );
 
     const heading = screen.getByRole('heading');
     expect(heading).toBeInTheDocument();
@@ -12,7 +17,11 @@ describe('About', () => {
   });
 
   it('render developer name properly', () => {
-    render(<About />);
+    render(
+      <MemoryRouter>
+        <About />
+      </MemoryRouter>
+    );
 
     const name = screen.getByText(/tatiana golub/i);
     expect(name).toBeInTheDocument();
@@ -20,7 +29,11 @@ describe('About', () => {
   });
 
   it('render RS School link', () => {
-    render(<About />);
+    render(
+      <MemoryRouter>
+        <About />
+      </MemoryRouter>
+    );
 
     const link = screen.getByRole('link', { name: /RS School React Course/i });
     expect(link).toBeInTheDocument();
@@ -30,7 +43,11 @@ describe('About', () => {
   });
 
   it('render back button', () => {
-    render(<About />);
+    render(
+      <MemoryRouter>
+        <About />
+      </MemoryRouter>
+    );
 
     const button = screen.getByRole('button', { name: /back to home/i });
     expect(button).toBeInTheDocument();
