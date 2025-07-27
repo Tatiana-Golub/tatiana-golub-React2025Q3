@@ -163,6 +163,59 @@ h1 {
   font-size: 1.3rem;
 }
 
+.details-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: whitesmoke;
+}
+
+.details-title {
+  color: wheat;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 2rem;
+}
+
+.pagination-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  color: #a1a1a1;
+  font-family: var(--font-raleway);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  background: #1f2123;
+  border: 1px solid #a1a1a1;
+
+  -webkit-box-shadow: 5px 5px 7px #1c1d1f, -5px -5px 7px #222527;
+  box-shadow: 5px 5px 7px #1c1d1f, -5px -5px 7px #222527;
+  transition: all 0.2s ease;
+}
+
+.pagination-button:hover:enabled {
+  color: wheat;
+  border-color: wheat;
+}
+
+.pagination-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-number {
+  font-family: var(--font-raleway);
+  color: #a1a1a1;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
 .loader {
   width: 40px;
   height: 40px;
