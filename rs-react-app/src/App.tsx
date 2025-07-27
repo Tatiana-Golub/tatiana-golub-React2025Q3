@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import Pagination from './components/Pagination';
 import AboutLink from './components/AboutLink';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const API_URL = `https://api.thecatapi.com/v1/breeds`;
 const API_KEY =
@@ -16,13 +16,24 @@ const LIMIT: number = 4;
 const START_PAGE: number = 1;
 const SEARCH_ITEM_KEY: string = 'searchItem';
 
+const parsePageNumber = (pageNumber: string | undefined) => {
+  const page = Number(pageNumber);
+  return page > 0 ? page : 1;
+};
+
 function App() {
+  const navigate = useNavigate();
   const { pageNumber } = useParams();
   const [searchTerm, setSearchTerm] = useLocalStorage(SEARCH_ITEM_KEY, '');
   const [breeds, setBreeds] = useState<Breed[]>([]);
-  const [page, setPage] = useState(START_PAGE);
+  const [page, setPage] = useState(parsePageNumber(pageNumber));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const navigateToPage = (page: number) => {
+    setPage(page);
+    navigate(`/catalog/${page}`);
+  };
 
   const hasBreeds = () => breeds.length > 0;
 
@@ -44,14 +55,14 @@ function App() {
     const next = current + 1;
     const total = breeds ? getTotalPageCount() : current;
 
-    setPage(next <= total ? next : current);
+    navigateToPage(next <= total ? next : current);
   }, [page, breeds, getTotalPageCount]);
 
   const handlePrevPageClick = useCallback(() => {
     const current = page;
     const prev = current - 1;
 
-    setPage(prev > 0 ? prev : current);
+    navigateToPage(prev > 0 ? prev : current);
   }, [page]);
 
   const fetchData = useCallback(
@@ -81,7 +92,7 @@ function App() {
           setError(err.message);
         })
         .finally(() => {
-          setPage(START_PAGE);
+          navigateToPage(START_PAGE);
           setLoading(false);
         });
     },
