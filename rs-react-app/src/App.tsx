@@ -8,10 +8,8 @@ import { useLocalStorage } from './hooks/useLocalStorage';
 import Pagination from './components/Pagination';
 import AboutLink from './components/AboutLink';
 import { useNavigate, useParams } from 'react-router-dom';
+import { fetchAll, fetchSearch } from './api/API';
 
-const API_URL = `https://api.thecatapi.com/v1/breeds`;
-const API_KEY =
-  'live_3CbgMb13ZFjtyL22iSqK3JakXhPppFZhgxM52h0cDrmKmGoOZ0s8HUbPRtyn3p6l';
 const LIMIT: number = 4;
 const START_PAGE: number = 1;
 const SEARCH_ITEM_KEY: string = 'searchItem';
@@ -69,18 +67,12 @@ function App() {
     (input: string) => {
       setSearchTerm(input);
 
-      let url = '';
-      if (input === '') url = API_URL;
-      else url = `${API_URL}/search?q=${input}`;
+      const responce = input === '' ? fetchAll() : fetchSearch(input);
 
       setLoading(true);
       setError(null);
 
-      fetch(url, {
-        headers: {
-          'x-api-key': API_KEY,
-        },
-      })
+      responce
         .then((res) => {
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           return res.json();
