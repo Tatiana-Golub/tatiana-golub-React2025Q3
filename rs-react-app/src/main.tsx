@@ -2,6 +2,11 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
+import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
+import About from './components/About.tsx';
+import NotFound from './components/NotFound.tsx';
+import { ABOUT_URL, START_URL } from './constants.ts';
+import DetailsCard from './components/DetailsCard.tsx';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -10,6 +15,15 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <App data="" />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to={START_URL} />} />
+        <Route path="/catalog/:pageNumber" element={<App />}>
+          <Route path=":id?" element={<DetailsCard />} />
+        </Route>
+        <Route path={ABOUT_URL} element={<About />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   </StrictMode>
 );

@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import App from '../src/App';
 import { mockBreeds } from './__mocks__/breeds.mock';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('App', () => {
   beforeEach(() => {
@@ -16,7 +17,11 @@ describe('App', () => {
       json: vi.fn().mockResolvedValue(mockBreeds),
     });
 
-    render(<App data="" />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledTimes(1);
@@ -33,9 +38,13 @@ describe('App', () => {
       json: vi.fn(),
     });
 
-    render(<App data="" />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
 
-    expect(await screen.findByText(/Error: HTTP 500/)).toBeInTheDocument();
+    expect(await screen.findByText(/Error: HTTP 500/i)).toBeInTheDocument();
   });
 
   it('trigger search callback with trimmed input when button is clicked', async () => {
@@ -44,7 +53,11 @@ describe('App', () => {
       json: vi.fn().mockResolvedValue(mockBreeds),
     });
 
-    render(<App data="" />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
     const input = screen.getByPlaceholderText(/search for cats/i);
     const button = screen.getByRole('button', { name: /search/i });
 
@@ -62,7 +75,11 @@ describe('App', () => {
       json: vi.fn().mockResolvedValue([{ id: '1', name: 'Siam' }]),
     });
 
-    render(<App data="" />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
@@ -70,5 +87,62 @@ describe('App', () => {
         expect.anything()
       );
     });
+  });
+
+  it('go to the next page when Next button is clicked', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => [
+        { id: 1, name: 'Breed 1' },
+        { id: 2, name: 'Breed 2' },
+        { id: 3, name: 'Breed 3' },
+        { id: 4, name: 'Breed 4' },
+        { id: 5, name: 'Breed 5' },
+      ],
+    });
+
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(await screen.findByText(/breed 1/i)).toBeInTheDocument();
+    expect(screen.getByText('1 / 2')).toBeInTheDocument();
+    const nextButton = screen.getByRole('button', { name: /next/i });
+    await userEvent.click(nextButton);
+    expect(await screen.findByText(/breed 5/i)).toBeInTheDocument();
+    expect(screen.getByText('2 / 2')).toBeInTheDocument();
+  });
+
+  it('go to the previous page when Prev button is clicked', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => [
+        { id: 1, name: 'Breed 1' },
+        { id: 2, name: 'Breed 2' },
+        { id: 3, name: 'Breed 3' },
+        { id: 4, name: 'Breed 4' },
+        { id: 5, name: 'Breed 5' },
+      ],
+    });
+
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(await screen.findByText(/breed 1/i)).toBeInTheDocument();
+    expect(screen.getByText('1 / 2')).toBeInTheDocument();
+    const nextButton = screen.getByRole('button', { name: /next/i });
+    await userEvent.click(nextButton);
+    expect(await screen.findByText(/breed 5/i)).toBeInTheDocument();
+    expect(screen.getByText('2 / 2')).toBeInTheDocument();
+
+    const prevButton = screen.getByRole('button', { name: /prev/i });
+    await userEvent.click(prevButton);
+    expect(await screen.findByText(/breed 1/i)).toBeInTheDocument();
+    expect(screen.getByText('1 / 2')).toBeInTheDocument();
   });
 });

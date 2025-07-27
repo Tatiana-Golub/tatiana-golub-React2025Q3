@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Outlet } from 'react-router-dom';
 import Card from './Card';
 
 export interface Breed {
@@ -8,23 +8,30 @@ export interface Breed {
 }
 
 export interface CardListProps {
+  pageNumber: string;
   data: Breed[];
 }
 
-class CardList extends Component<CardListProps> {
-  render() {
-    const { data: items } = this.props;
-    if (items.length === 0)
-      return <p className="empty-search-message">Nothing in search.</p>;
+function CardList(props: CardListProps) {
+  if (props.data.length === 0)
+    return <p className="empty-search-message">Nothing in search.</p>;
 
-    return (
+  return (
+    <div className="main-container">
       <div className="card-list">
-        {items.map((item) => (
-          <Card key={item.id} name={item.name} description={item.description} />
+        {props.data.map((item) => (
+          <Card
+            key={item.id}
+            id={item.id}
+            pageNumber={props.pageNumber}
+            name={item.name}
+            description={item.description}
+          />
         ))}
       </div>
-    );
-  }
+      <Outlet />
+    </div>
+  );
 }
 
 export default CardList;

@@ -1,20 +1,25 @@
-import { Component } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface CardProps {
+  id: string;
+  pageNumber: string;
   name: string;
   description: string;
 }
 
-class Card extends Component<CardProps> {
-  render() {
-    const { name, description } = this.props;
-    return (
-      <div className="card">
-        <h3 className="card-title">{name}</h3>
-        <p>{description}</p>
-      </div>
-    );
+function Card({ id, pageNumber, name, description }: CardProps) {
+  const navigate = useNavigate();
+
+  function handleCardClick(): void {
+    navigate(`/catalog/${pageNumber}/${id}`);
   }
+
+  return (
+    <div className="card" onClick={handleCardClick}>
+      <h3 className="card-title">{name}</h3>
+      <p>{description}</p>
+    </div>
+  );
 }
 
 export default Card;

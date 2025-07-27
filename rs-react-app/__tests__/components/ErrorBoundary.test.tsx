@@ -28,7 +28,7 @@ describe('Error Boundary', () => {
     expect(screen.getByText(/everything is fine/i)).toBeInTheDocument();
   });
 
-  it(`display fallback UI when error occurs and log error`, () => {
+  it('display fallback UI when error occurs and log error', () => {
     render(
       <ErrorBoundary>
         <ProblemChild />

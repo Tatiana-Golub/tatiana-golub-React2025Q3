@@ -1,102 +1,126 @@
-import { Component } from 'react';
 import './App.css';
 import SearchBar from './components/SearchBar';
 import CardList, { type Breed } from './components/CardList';
 import Spinner from './components/Spinner';
-import ErrorButton from './components/ErrorButton';
 import ErrorBoundary from './components/ErrorBoundary';
+import { useCallback, useEffect, useState } from 'react';
+import { useLocalStorage } from './hooks/useLocalStorage';
+import Pagination from './components/Pagination';
+import AboutLink from './components/AboutLink';
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchAll, fetchSearch } from './api/API';
 
-const API_URL = `https://api.thecatapi.com/v1/breeds`;
-const API_KEY =
-  'live_3CbgMb13ZFjtyL22iSqK3JakXhPppFZhgxM52h0cDrmKmGoOZ0s8HUbPRtyn3p6l';
+const LIMIT: number = 4;
+const START_PAGE: number = 1;
+const SEARCH_ITEM_KEY: string = 'searchItem';
 
-interface AppState {
-  searchItem: string;
-  breeds: Breed[];
-  loading: boolean;
-  error: string | null;
-}
+const parsePageNumber = (pageNumber: string | undefined) => {
+  const page = Number(pageNumber);
+  return page > 0 ? page : 1;
+};
 
-interface AppProps {
-  data: string;
-}
+function App() {
+  const navigate = useNavigate();
+  const { pageNumber } = useParams();
+  const [searchTerm, setSearchTerm] = useLocalStorage(SEARCH_ITEM_KEY, '');
+  const [breeds, setBreeds] = useState<Breed[]>([]);
+  const [page, setPage] = useState(parsePageNumber(pageNumber));
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-class App extends Component<AppProps, AppState> {
-  private limit: number = 5;
-  private SEARCH_ITEM_KEY: string = 'searchItem';
-
-  constructor(props: AppProps) {
-    super(props);
-    this.state = {
-      searchItem: '',
-      breeds: [],
-      loading: false,
-      error: null,
-    };
-  }
-
-  componentDidMount() {
-    const savedTerm = this.loadSearchTerm();
-    this.fetchData(savedTerm);
-  }
-
-  fetchData = (input: string) => {
-    this.saveSearchTerm(input);
-
-    let url = '';
-    if (input === '') url = `${API_URL}?limit=${this.limit}&page=0`;
-    else url = `${API_URL}/search?q=${input}`;
-
-    this.setState({ loading: true, error: null });
-    fetch(url, {
-      headers: {
-        'x-api-key': API_KEY,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data: Breed[]) => {
-        const filtered = input
-          ? data.filter((_breed, index) => {
-              if (index < this.limit) return true;
-            })
-          : data;
-        this.setState({ breeds: filtered, loading: false });
-      })
-      .catch((err) => {
-        this.setState({ error: err.message, loading: false });
-      });
+  const navigateToPage = (page: number) => {
+    setPage(page);
+    navigate(`/catalog/${page}`);
   };
 
-  loadSearchTerm(): string {
-    return localStorage.getItem(this.SEARCH_ITEM_KEY) || '';
-  }
+  const hasBreeds = () => breeds.length > 0;
 
-  saveSearchTerm(term: string) {
-    localStorage.setItem(this.SEARCH_ITEM_KEY, term);
-  }
+  const filterBreeds = (): Breed[] => {
+    const fromIndex = (page - 1) * LIMIT;
+    const toIndex = page * LIMIT - 1;
+    return breeds.filter((_breed, index) => {
+      if (index >= fromIndex && index <= toIndex) return true;
+    });
+  };
 
-  render() {
-    const { error } = this.state;
+  const getTotalPageCount = useCallback(
+    (): number => Math.ceil(breeds.length / LIMIT),
+    [breeds]
+  );
 
-    return (
-      <div className="app">
-        <h1>Breeds Cat-alog</h1>
-        <SearchBar input={this.loadSearchTerm()} onSearch={this.fetchData} />
-        <Spinner loading={this.state.loading} />
-        <ErrorBoundary>
-          {error ? (
-            <p className="error-message">Error: {error}</p>
-          ) : (
-            <CardList data={this.state.breeds} />
-          )}
-          <ErrorButton />
-        </ErrorBoundary>
-      </div>
-    );
-  }
+  const handleNextPageClick = useCallback(() => {
+    const current = page;
+    const next = current + 1;
+    const total = breeds ? getTotalPageCount() : current;
+
+    navigateToPage(next <= total ? next : current);
+  }, [page, breeds, getTotalPageCount]);
+
+  const handlePrevPageClick = useCallback(() => {
+    const current = page;
+    const prev = current - 1;
+
+    navigateToPage(prev > 0 ? prev : current);
+  }, [page]);
+
+  const fetchData = useCallback(
+    (input: string) => {
+      setSearchTerm(input);
+
+      const responce = input === '' ? fetchAll() : fetchSearch(input);
+
+      setLoading(true);
+      setError(null);
+
+      responce
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then((data: Breed[]) => {
+          setBreeds(data);
+        })
+        .catch((err) => {
+          setError(err.message);
+        })
+        .finally(() => {
+          navigateToPage(START_PAGE);
+          setLoading(false);
+        });
+    },
+    [setSearchTerm]
+  );
+
+  useEffect(() => {
+    fetchData(searchTerm);
+  }, [fetchData, searchTerm]);
+
+  return (
+    <div className="app">
+      <AboutLink />
+      <h1>Breeds Cat-alog</h1>
+      <SearchBar input={searchTerm} onSearch={fetchData} />
+      <Spinner loading={loading} />
+      <ErrorBoundary>
+        {error ? (
+          <p className="error-message">Error: {error}</p>
+        ) : (
+          <CardList pageNumber={pageNumber || '1'} data={filterBreeds()} />
+        )}
+        {!loading && hasBreeds() && (
+          <Pagination
+            onNextPageClick={handleNextPageClick}
+            onPrevPageClick={handlePrevPageClick}
+            disable={{
+              left: page === 1,
+              right: page === getTotalPageCount(),
+            }}
+            nav={{ current: page, total: getTotalPageCount() }}
+          />
+        )}
+      </ErrorBoundary>
+    </div>
+  );
 }
 
 export default App;
