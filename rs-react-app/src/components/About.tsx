@@ -9,16 +9,15 @@ function About() {
         passionate English translator and web developer.
       </p>
       <p className="about-description">
-        It is part of the {}
+        It is part of the{' '}
         <a
           href="https://rs.school/courses/reactjs"
           target="_blank"
-          style={{ color: '#5c6bc0' }}
+          className="school-link"
           rel="noreferrer"
         >
           RS School React Course
         </a>{' '}
-        {}
         task.
       </p>
       <BackButton />

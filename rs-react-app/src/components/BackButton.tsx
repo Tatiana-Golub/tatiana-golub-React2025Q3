@@ -9,11 +9,9 @@ function BackButton() {
   }
 
   return (
-    <div>
-      <button className="back-button" onClick={handleClick}>
-        Back to Home
-      </button>
-    </div>
+    <button className="back-button" onClick={handleClick}>
+      Back to Home
+    </button>
   );
 }
 

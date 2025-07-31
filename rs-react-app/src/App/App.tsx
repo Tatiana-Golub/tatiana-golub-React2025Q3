@@ -1,23 +1,20 @@
 import './App.css';
-import SearchBar from './components/SearchBar';
-import CardList, { type Breed } from './components/CardList';
-import Spinner from './components/Spinner';
-import ErrorBoundary from './components/ErrorBoundary';
+import SearchBar from '../components/SearchBar';
+import CardList, { type Breed } from '../components/CardList';
+import Spinner from '../components/Spinner';
+import ErrorBoundary from '../components/ErrorBoundary';
 import { useCallback, useEffect, useState } from 'react';
-import { useLocalStorage } from './hooks/useLocalStorage';
-import Pagination from './components/Pagination';
-import AboutLink from './components/AboutLink';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import Pagination from '../components/Pagination';
+import AboutLink from '../components/AboutLink';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchAll, fetchSearch } from './api/API';
+import { fetchAll, fetchSearch } from '../api/API';
+import { hasBreeds, parsePageNumber } from './helpers';
+import MainSection from '../components/MainSection';
 
 const LIMIT: number = 4;
 const START_PAGE: number = 1;
 const SEARCH_ITEM_KEY: string = 'searchItem';
-
-const parsePageNumber = (pageNumber: string | undefined) => {
-  const page = Number(pageNumber);
-  return page > 0 ? page : 1;
-};
 
 function App() {
   const navigate = useNavigate();
@@ -33,13 +30,11 @@ function App() {
     navigate(`/catalog/${page}`);
   };
 
-  const hasBreeds = () => breeds.length > 0;
-
   const filterBreeds = (): Breed[] => {
     const fromIndex = (page - 1) * LIMIT;
     const toIndex = page * LIMIT - 1;
     return breeds.filter((_breed, index) => {
-      if (index >= fromIndex && index <= toIndex) return true;
+      return index >= fromIndex && index <= toIndex;
     });
   };
 
@@ -49,18 +44,16 @@ function App() {
   );
 
   const handleNextPageClick = useCallback(() => {
-    const current = page;
-    const next = current + 1;
-    const total = breeds ? getTotalPageCount() : current;
+    const next = page + 1;
+    const total = breeds ? getTotalPageCount() : page;
 
-    navigateToPage(next <= total ? next : current);
+    navigateToPage(next <= total ? next : page);
   }, [page, breeds, getTotalPageCount]);
 
   const handlePrevPageClick = useCallback(() => {
-    const current = page;
-    const prev = current - 1;
+    const prev = page - 1;
 
-    navigateToPage(prev > 0 ? prev : current);
+    navigateToPage(prev > 0 ? prev : page);
   }, [page]);
 
   const fetchData = useCallback(
@@ -102,12 +95,12 @@ function App() {
       <SearchBar input={searchTerm} onSearch={fetchData} />
       <Spinner loading={loading} />
       <ErrorBoundary>
-        {error ? (
-          <p className="error-message">Error: {error}</p>
-        ) : (
-          <CardList pageNumber={pageNumber || '1'} data={filterBreeds()} />
-        )}
-        {!loading && hasBreeds() && (
+        <MainSection
+          pageNumber={pageNumber || '1'}
+          error={error}
+          filteredBreeds={filterBreeds()}
+        />
+        {!loading && hasBreeds(breeds) && (
           <Pagination
             onNextPageClick={handleNextPageClick}
             onPrevPageClick={handlePrevPageClick}

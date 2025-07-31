@@ -19,6 +19,10 @@ function DetailsCard() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const handleCloseButton = (): void => {
+    navigate(`/catalog/${pageNumber}`);
+  }
+
   const fetchData = (id: string) => {
     setLoading(true);
     setError(null);
@@ -49,31 +53,29 @@ function DetailsCard() {
     return <Spinner loading={loading} />;
   }
 
+  if (error) {
+    return <p className="error-message">Error: {error}</p>;
+  }
+
+  if (!data) {
+    return <p className="error-message">Breed not found</p>;
+  }
+
   return (
     <div className="details-card">
-      <CloseButton
-        onClick={function (): void {
-          navigate(`/catalog/${pageNumber}`);
-        }}
-      />
-      {error ? (
-        <p className="error-message">Error: {error}</p>
-      ) : !data ? (
-        <p className="error-message">Breed not found</p>
-      ) : (
-        <>
-          <h3 className="details-title">Breed Details: {data.name}</h3>
-          <p>Temperament: {data.temperament}</p>
-          <p>Origin: {data.origin}</p>
-          <p>Lifespan: {data.life_span}</p>
-          <p>
-            Wikipedia:{' '}
-            <a href={data.wikipedia_url} target="_blank" rel="noreferrer">
-              {data.wikipedia_url}
-            </a>
-          </p>
-        </>
-      )}
+      <CloseButton onClick={handleCloseButton} />
+      <>
+        <h3 className="details-title">Breed Details: {data.name}</h3>
+        <p>Temperament: {data.temperament}</p>
+        <p>Origin: {data.origin}</p>
+        <p>Lifespan: {data.life_span}</p>
+        <p>
+          Wikipedia:{' '}
+          <a href={data.wikipedia_url} target="_blank" rel="noreferrer">
+            {data.wikipedia_url}
+          </a>
+        </p>
+      </>
     </div>
   );
 }

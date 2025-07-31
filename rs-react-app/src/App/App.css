@@ -180,6 +180,10 @@ h1 {
   max-width: 40rem;
 }
 
+.school-link {
+  color: #5c6bc0;
+}
+
 .details-card {
   display: flex;
   flex-direction: column;
@@ -256,6 +260,13 @@ h1 {
 .about-link.active {
   color: wheat;
   border-bottom: 2px solid wheat;
+}
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .loader {

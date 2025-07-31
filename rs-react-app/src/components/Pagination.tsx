@@ -14,19 +14,12 @@ type PaginationProps = {
 const Pagination = (props: PaginationProps) => {
   const { nav = null, disable, onNextPageClick, onPrevPageClick } = props;
 
-  const handleNextPageClick = () => {
-    onNextPageClick();
-  };
-  const handlePrevPageClick = () => {
-    onPrevPageClick();
-  };
-
   return (
     <div className="pagination">
       <button
         className="pagination-button"
         type="button"
-        onClick={handlePrevPageClick}
+        onClick={onPrevPageClick}
         disabled={disable.left}
       >
         {'Prev'}
@@ -39,7 +32,7 @@ const Pagination = (props: PaginationProps) => {
       <button
         className="pagination-button"
         type="button"
-        onClick={handleNextPageClick}
+        onClick={onNextPageClick}
         disabled={disable.right}
       >
         {'Next'}
