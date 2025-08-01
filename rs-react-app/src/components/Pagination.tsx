@@ -22,7 +22,7 @@ const Pagination = (props: PaginationProps) => {
         onClick={onPrevPageClick}
         disabled={disable.left}
       >
-        {'Prev'}
+        Prev
       </button>
       {nav && (
         <span className="page-number">
@@ -35,7 +35,7 @@ const Pagination = (props: PaginationProps) => {
         onClick={onNextPageClick}
         disabled={disable.right}
       >
-        {'Next'}
+        Next
       </button>
     </div>
   );
