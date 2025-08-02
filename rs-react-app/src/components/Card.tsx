@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import SelectedCardCheckbox from './SelectedCardCheckbox';
 
 interface CardProps {
   id: string;
@@ -16,7 +17,10 @@ function Card({ id, pageNumber, name, description }: CardProps) {
 
   return (
     <div className="card" onClick={handleCardClick}>
-      <h3 className="card-title">{name}</h3>
+      <div className="card-header">
+        <h3 className="card-title">{name}</h3>
+        <SelectedCardCheckbox />
+      </div>
       <p>{description}</p>
     </div>
   );

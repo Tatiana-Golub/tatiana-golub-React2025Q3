@@ -2,6 +2,7 @@ import './App.css';
 import {
   AboutLink,
   ErrorBoundary,
+  FlyoutElement,
   MainSection,
   Pagination,
   SearchBar,
@@ -110,6 +111,7 @@ function App() {
             nav={{ current: page, total: totalPageCount }}
           />
         )}
+        <FlyoutElement />
       </ErrorBoundary>
     </div>
   );

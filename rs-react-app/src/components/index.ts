@@ -12,3 +12,5 @@ export { default as NotFound } from './NotFound';
 export { default as Pagination } from './Pagination';
 export { default as SearchBar } from './SearchBar';
 export { default as Spinner } from './Spinner';
+export { default as SelectedCardCheckbox } from './SelectedCardCheckbox';
+export { default as FlyoutElement } from './FlyoutElement';
