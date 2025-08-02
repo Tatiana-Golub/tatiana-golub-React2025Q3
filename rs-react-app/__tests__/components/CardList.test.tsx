@@ -3,13 +3,17 @@ import { describe, expect, it } from 'vitest';
 import CardList from '../../src/components/CardList';
 import { mockBreeds } from '../__mocks__/breeds.mock';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../src/redux/store';
 
 describe('CardList', () => {
   it('render correct number of items when data is provided', () => {
     render(
-      <MemoryRouter>
-        <CardList data={mockBreeds} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <CardList data={mockBreeds} pageNumber={''} />
+        </MemoryRouter>
+      </Provider>
     );
 
     const cards = screen.getAllByRole('heading');
@@ -18,9 +22,11 @@ describe('CardList', () => {
 
   it('correctly displays item names and descriptions', () => {
     render(
-      <MemoryRouter>
-        <CardList data={mockBreeds} />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <CardList data={mockBreeds} pageNumber={''} />
+        </MemoryRouter>
+      </Provider>
     );
 
     const heading1 = screen.getByRole('heading', { name: /persian/i });

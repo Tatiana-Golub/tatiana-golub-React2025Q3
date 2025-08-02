@@ -1,18 +1,19 @@
-import { useState } from 'react';
+interface Props {
+  isSelected: boolean;
+  onClick: (isChecked: boolean) => void;
+}
 
-function SelectedCardCheckbox() {
-  const [isSelected, setIsSelected] = useState(false);
-
+function SelectedCardCheckbox(props: Props) {
   function handleClick(e: { stopPropagation: () => void }) {
     e.stopPropagation();
-    setIsSelected(!isSelected);
+    props.onClick(!props.isSelected);
   }
 
   return (
     <input
       type="checkbox"
       className="card-checkbox"
-      checked={isSelected}
+      checked={props.isSelected}
       onClick={handleClick}
       onChange={() => {}}
     />
