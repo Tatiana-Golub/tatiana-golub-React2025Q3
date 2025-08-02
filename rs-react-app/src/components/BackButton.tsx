@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { START_URL } from '../constants.ts';
+import { START_URL } from '../constants.tsx';
 
 function BackButton() {
   const navigate = useNavigate();

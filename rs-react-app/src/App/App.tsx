@@ -19,6 +19,7 @@ import { SEARCH_ITEM_KEY, START_PAGE } from './constants';
 import type { Breed } from '../components/CardList';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { fetchAll, fetchSearch } from '../api/API';
+import ThemeSelector from '../components/ThemeSelector';
 
 function App() {
   const navigate = useNavigate();
@@ -85,7 +86,10 @@ function App() {
 
   return (
     <div className="app">
-      <AboutLink />
+      <div className="header">
+        <ThemeSelector />
+        <AboutLink />
+      </div>
       <h1>Breeds Cat-alog</h1>
       <SearchBar input={searchTerm} onSearch={fetchData} />
       <Spinner loading={loading} />

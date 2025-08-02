@@ -1,6 +1,48 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700');
 @import url('https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 
+[data-theme="light"] {
+  --bg-color: #f5f5f5;
+  --text-color: #2e2e2e;
+  --border-color: #212426;
+  --theme-icon-color: #212426;
+  --title-color-gradient: rgba(255, 200, 120, 0.5);
+  --title-color-main: rgba(255, 140, 0, 1);
+  --details-text-color: #444444;
+  --input-text-color:#2e2e2e;
+  --input-bg-color: #ffffff;
+  --input-shadow-light: #ddd;
+  --input-shadow-dark: #bbb;
+  --about-text-color: #444444;
+  --spinner-color: rgba(255, 140, 0, 1);
+  --pagination-text-color: #2e2e2e;
+  --pagination-bg-color: #ffffff;
+  --pagination-shadow-light: #ddd;
+  --pagination-shadow-dark: #bbb;
+  --paginatoin-hover-color: rgba(255, 140, 0, 1);
+}
+
+[data-theme="dark"] {
+  --bg-color: #212426;
+  --text-color: wheat;
+  --border-color: white;
+  --theme-icon-color: whitesmoke;
+  --title-color-gradient: rgba(249, 211, 180, 0.5);
+  --title-color-main: rgba(249, 211, 180, 1);
+  --details-text-color: whitesmoke;
+  --input-text-color: #a1a1a1;
+  --input-bg-color: #1f2123;
+  --input-shadow-light: #1c1d1f;
+  --input-shadow-dark: #222527;
+  --about-text-color: whitesmoke;
+  --spinner-color: rgba(249, 211, 180, 1);
+  --pagination-text-color: #a1a1a1;
+  --pagination-bg-color: #1f2123;
+  --pagination-shadow-light: #1c1d1f;
+  --pagination-shadow-dark: #222527;
+  --paginatoin-hover-color: wheat;
+}
+
 * {
   margin: 0;
   border: 0;
@@ -17,7 +59,7 @@ body {
   justify-content: center;
   align-items: center;
   font-family: var(--font-roboto);
-  background-color: #212426;
+  background-color: var(--bg-color);
 }
 
 .app {
@@ -34,8 +76,8 @@ h1 {
   font-size: 3rem;
   letter-spacing: 0.9px;
   background: linear-gradient(90deg,
-      rgba(249, 211, 180, 1) 0%,
-      rgba(249, 211, 180, 0.5) 100%);
+      var(--title-color-main) 0%,
+      var(--title-color-gradient) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -51,17 +93,17 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid white;
+  border: 1px solid var(--border-color);
 
   padding: 1.5rem 1.75rem;
   border-radius: 3rem;
-  background: #1f2123;
+  background: var(--input-bg-color);
   -webkit-box-shadow:
-    5px 5px 7px #1c1d1f,
-    -5px -5px 7px #222527;
+    5px 5px 7px var(--input-shadow-light),
+    -5px -5px 7px var(--input-shadow-dark);
   box-shadow:
-    5px 5px 7px #1c1d1f,
-    -5px -5px 7px #222527;
+    5px 5px 7px var(--input-shadow-light),
+    -5px -5px 7px var(--input-shadow-dark);
 }
 
 .search input {
@@ -73,27 +115,27 @@ h1 {
   padding-right: 1rem;
 
   outline: none;
-  color: #a1a1a1;
-  background: #1f2123;
+  color: var(--input-text-color);
+  background: var(--input-bg-color);
 }
 
 .search button {
   padding: 20px 40px;
   border-radius: 0.5rem;
   margin-left: 15px;
-  color: #a1a1a1;
+  color: var(--input-text-color);
   font-family: var(--font-raleway);
   font-weight: 900;
   letter-spacing: 0.75px;
   font-size: 1.25rem;
   cursor: pointer;
-  background: #1f2123;
+  background: var(--input-bg-color);
   -webkit-box-shadow:
-    5px 5px 7px #1c1d1f,
-    -5px -5px 7px #222527;
+    5px 5px 7px var(--input-shadow-light),
+    -5px -5px 7px var(--input-shadow-dark);
   box-shadow:
-    5px 5px 7px #1c1d1f,
-    -5px -5px 7px #222527;
+    5px 5px 7px var(--input-shadow-light),
+    -5px -5px 7px var(--input-shadow-dark);
 }
 
 .main-container {
@@ -118,12 +160,12 @@ h1 {
   height: fit-content;
   margin: 0 1.5rem 1.5rem;
   padding: 1rem;
-  color: wheat;
+  color: var(--text-color);
 
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid white;
+  border: 1px solid var(--border-color);
 
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
   box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
@@ -159,7 +201,7 @@ h1 {
 }
 
 .empty-search-message {
-  color: wheat;
+  color: var(--text-color);
   text-align: center;
   font-size: 1.8rem;
 }
@@ -174,7 +216,7 @@ h1 {
 }
 
 .about-description {
-  color: whitesmoke;
+  color: var(--about-text-color);
   font-size: 1.3rem;
   width: 100%;
   max-width: 40rem;
@@ -188,14 +230,14 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  color: whitesmoke;
+  color: var(--details-text-color);
   width: 100%;
   max-width: 300px;
   margin-top: 3rem;
 }
 
 .details-title {
-  color: wheat;
+  color: var(--text-color);
 }
 
 .pagination {
@@ -209,23 +251,23 @@ h1 {
 .pagination-button {
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
-  color: #a1a1a1;
+  color: var(--pagination-text-color);
   font-family: var(--font-raleway);
   font-weight: 700;
   font-size: 1.25rem;
   letter-spacing: 0.5px;
   cursor: pointer;
-  background: #1f2123;
-  border: 1px solid #a1a1a1;
+  background: var(--pagination-bg-color);
+  border: 1px solid var(--pagination-text-color);
 
-  -webkit-box-shadow: 5px 5px 7px #1c1d1f, -5px -5px 7px #222527;
-  box-shadow: 5px 5px 7px #1c1d1f, -5px -5px 7px #222527;
+  -webkit-box-shadow: 5px 5px 7px var(--pagination-shadow-light), -5px -5px 7px var(--pagination-shadow-dark);
+  box-shadow: 5px 5px 7px var(--pagination-shadow-light), -5px -5px 7px var(--pagination-shadow-dark);
   transition: all 0.2s ease;
 }
 
 .pagination-button:hover:enabled {
-  color: wheat;
-  border-color: wheat;
+  color: var(--paginatoin-hover-color);
+  border-color: var(--paginatoin-hover-color);
 }
 
 .pagination-button:disabled {
@@ -235,9 +277,18 @@ h1 {
 
 .page-number {
   font-family: var(--font-raleway);
-  color: #a1a1a1;
+  color: var(--pagination-text-color);
   font-size: 1.25rem;
   font-weight: 500;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
 .about-link {
@@ -254,7 +305,7 @@ h1 {
 }
 
 .about-link:hover {
-  color: wheat;
+  color: var(--text-color);
 }
 
 .about-link.active {
@@ -267,6 +318,25 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.theme-toggle-button {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  padding: 0.8rem;
+  margin-top: 2rem;
+  transition: background-color 0.2s ease;
+}
+
+.theme-toggle-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-icon {
+  color: var(--theme-icon-color);
+  width: 24px;
+  height: 24px;
 }
 
 .loader {
@@ -283,7 +353,7 @@ h1 {
 .inner-circle {
   width: 80%;
   height: 80%;
-  background-color: #212426;
+  background-color: var(--bg-color);
   border-radius: 50%;
 }
 
