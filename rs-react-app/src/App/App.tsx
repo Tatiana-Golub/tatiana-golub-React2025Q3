@@ -111,7 +111,7 @@ function App() {
             nav={{ current: page, total: totalPageCount }}
           />
         )}
-        <FlyoutElement />
+        <FlyoutElement items={breeds} />
       </ErrorBoundary>
     </div>
   );

@@ -1,8 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../redux/store';
 import { unselectAll } from '../redux/cardSlice';
+import type { Breed } from './CardList';
+import { convertToCSV } from '../utils/utils';
 
-function FlyoutElement() {
+interface Props {
+  items: Breed[];
+}
+
+function FlyoutElement({ items }: Props) {
   const dispatch = useDispatch();
   const { selectedItemsIds } = useSelector(
     (state: RootState) => state.selectedItems
@@ -25,9 +31,13 @@ function FlyoutElement() {
         <button className="flyout-button" onClick={onUnselectClick}>
           Unselect all
         </button>
-        <button className="flyout-button" onClick={() => console.debug(true)}>
+        <a
+          href={convertToCSV(selectedItemsIds, items)}
+          download={`${selectedItemsCount}_items.csv`}
+          className="flyout-button"
+        >
           Download
-        </button>
+        </a>
       </div>
     </div>
   );
