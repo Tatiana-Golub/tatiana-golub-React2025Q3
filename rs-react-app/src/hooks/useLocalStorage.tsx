@@ -1,15 +1,11 @@
 import { useState, useEffect } from 'react';
+import { getStorageValue } from './helpers';
 
 export function useLocalStorage(
   key: string,
   defaultValue: string
 ): [string, (value: string) => void] {
-  const getStorageValue = () => {
-    const saved = localStorage.getItem(key);
-    return saved || defaultValue;
-  };
-
-  const [value, setValue] = useState(getStorageValue);
+  const [value, setValue] = useState(getStorageValue(key, defaultValue));
 
   useEffect(() => {
     localStorage.setItem(key, value);

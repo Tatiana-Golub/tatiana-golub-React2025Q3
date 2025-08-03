@@ -12,8 +12,7 @@ function SearchBar({ input: initialInput, onSearch }: SearchBarProps) {
   };
 
   const onButtonClick = () => {
-    const inputTrimmed = input.trim();
-    onSearch(inputTrimmed);
+    onSearch(input.trim());
   };
 
   const onEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {

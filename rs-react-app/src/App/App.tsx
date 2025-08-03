@@ -1,23 +1,26 @@
 import './App.css';
-import SearchBar from './components/SearchBar';
-import CardList, { type Breed } from './components/CardList';
-import Spinner from './components/Spinner';
-import ErrorBoundary from './components/ErrorBoundary';
+import {
+  AboutLink,
+  ErrorBoundary,
+  FlyoutElement,
+  MainSection,
+  Pagination,
+  SearchBar,
+  Spinner,
+} from '../components';
 import { useCallback, useEffect, useState } from 'react';
-import { useLocalStorage } from './hooks/useLocalStorage';
-import Pagination from './components/Pagination';
-import AboutLink from './components/AboutLink';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchAll, fetchSearch } from './api/API';
-
-const LIMIT: number = 4;
-const START_PAGE: number = 1;
-const SEARCH_ITEM_KEY: string = 'searchItem';
-
-const parsePageNumber = (pageNumber: string | undefined) => {
-  const page = Number(pageNumber);
-  return page > 0 ? page : 1;
-};
+import {
+  filterBreeds,
+  getTotalPageCount,
+  hasBreeds,
+  parsePageNumber,
+} from './helpers';
+import { SEARCH_ITEM_KEY, START_PAGE } from './constants';
+import type { Breed } from '../components/CardList';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { fetchAll, fetchSearch } from '../api/API';
+import ThemeSelector from '../components/ThemeSelector';
 
 function App() {
   const navigate = useNavigate();
@@ -28,40 +31,25 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const navigateToPage = (page: number) => {
+  const navigateToPage = useCallback((page: number) => {
     setPage(page);
     navigate(`/catalog/${page}`);
-  };
-
-  const hasBreeds = () => breeds.length > 0;
-
-  const filterBreeds = (): Breed[] => {
-    const fromIndex = (page - 1) * LIMIT;
-    const toIndex = page * LIMIT - 1;
-    return breeds.filter((_breed, index) => {
-      if (index >= fromIndex && index <= toIndex) return true;
-    });
-  };
-
-  const getTotalPageCount = useCallback(
-    (): number => Math.ceil(breeds.length / LIMIT),
-    [breeds]
-  );
+  }, []);
 
   const handleNextPageClick = useCallback(() => {
-    const current = page;
-    const next = current + 1;
-    const total = breeds ? getTotalPageCount() : current;
+    const next = page + 1;
+    const total = breeds ? getTotalPageCount(breeds) : page;
 
-    navigateToPage(next <= total ? next : current);
-  }, [page, breeds, getTotalPageCount]);
+    const newPage = next <= total ? next : page;
+    navigateToPage(newPage);
+  }, [page, breeds, navigateToPage]);
 
   const handlePrevPageClick = useCallback(() => {
-    const current = page;
-    const prev = current - 1;
+    const prev = page - 1;
 
-    navigateToPage(prev > 0 ? prev : current);
-  }, [page]);
+    const newPage = prev > 0 ? prev : page;
+    navigateToPage(newPage);
+  }, [navigateToPage, page]);
 
   const fetchData = useCallback(
     (input: string) => {
@@ -88,36 +76,42 @@ function App() {
           setLoading(false);
         });
     },
-    [setSearchTerm]
+    [navigateToPage, setSearchTerm]
   );
 
   useEffect(() => {
     fetchData(searchTerm);
   }, [fetchData, searchTerm]);
 
+  const totalPageCount = getTotalPageCount(breeds);
+
   return (
     <div className="app">
-      <AboutLink />
+      <div className="header">
+        <ThemeSelector />
+        <AboutLink />
+      </div>
       <h1>Breeds Cat-alog</h1>
       <SearchBar input={searchTerm} onSearch={fetchData} />
       <Spinner loading={loading} />
       <ErrorBoundary>
-        {error ? (
-          <p className="error-message">Error: {error}</p>
-        ) : (
-          <CardList pageNumber={pageNumber || '1'} data={filterBreeds()} />
-        )}
-        {!loading && hasBreeds() && (
+        <MainSection
+          pageNumber={pageNumber || '1'}
+          error={error}
+          filteredBreeds={filterBreeds(breeds, page)}
+        />
+        {!loading && hasBreeds(breeds) && (
           <Pagination
             onNextPageClick={handleNextPageClick}
             onPrevPageClick={handlePrevPageClick}
             disable={{
               left: page === 1,
-              right: page === getTotalPageCount(),
+              right: page === totalPageCount,
             }}
-            nav={{ current: page, total: getTotalPageCount() }}
+            nav={{ current: page, total: totalPageCount }}
           />
         )}
+        <FlyoutElement items={breeds} />
       </ErrorBoundary>
     </div>
   );

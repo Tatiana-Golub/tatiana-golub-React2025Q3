@@ -1,9 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import App from '../src/App';
-import { mockBreeds } from './__mocks__/breeds.mock';
+import App from '../src/App/App';
+import { fetchedBreeds, mockBreeds } from './__mocks__/breeds.mock';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../src/redux/store';
 
 describe('App', () => {
   beforeEach(() => {
@@ -18,9 +20,11 @@ describe('App', () => {
     });
 
     render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
 
     await waitFor(() => {
@@ -39,9 +43,11 @@ describe('App', () => {
     });
 
     render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(await screen.findByText(/Error: HTTP 500/i)).toBeInTheDocument();
@@ -54,10 +60,13 @@ describe('App', () => {
     });
 
     render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
+
     const input = screen.getByPlaceholderText(/search for cats/i);
     const button = screen.getByRole('button', { name: /search/i });
 
@@ -76,9 +85,11 @@ describe('App', () => {
     });
 
     render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
 
     await waitFor(() => {
@@ -92,19 +103,15 @@ describe('App', () => {
   it('go to the next page when Next button is clicked', async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => [
-        { id: 1, name: 'Breed 1' },
-        { id: 2, name: 'Breed 2' },
-        { id: 3, name: 'Breed 3' },
-        { id: 4, name: 'Breed 4' },
-        { id: 5, name: 'Breed 5' },
-      ],
+      json: async () => fetchedBreeds,
     });
 
     render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(await screen.findByText(/breed 1/i)).toBeInTheDocument();
@@ -118,19 +125,15 @@ describe('App', () => {
   it('go to the previous page when Prev button is clicked', async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => [
-        { id: 1, name: 'Breed 1' },
-        { id: 2, name: 'Breed 2' },
-        { id: 3, name: 'Breed 3' },
-        { id: 4, name: 'Breed 4' },
-        { id: 5, name: 'Breed 5' },
-      ],
+      json: async () => fetchedBreeds,
     });
 
     render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(await screen.findByText(/breed 1/i)).toBeInTheDocument();
