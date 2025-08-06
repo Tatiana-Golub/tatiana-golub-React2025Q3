@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { configureStore } from '@reduxjs/toolkit';
 import type { ReactElement, PropsWithChildren } from 'react';
-import selectedItemsSlice from '../../src/redux/cardSlice';
+import selectedItemsSlice from '../../src/store/slices/cardSlice';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 

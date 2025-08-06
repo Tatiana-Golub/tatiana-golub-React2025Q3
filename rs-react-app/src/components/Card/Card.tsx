@@ -1,8 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Card.module.css';
-import type { RootState } from '../../redux/store';
-import { selectItem, unselectItem } from '../../redux/cardSlice';
+import {
+  selectItem,
+  selectSelectedItemsIds,
+  unselectItem,
+} from '../../store/slices/cardSlice';
 import SelectedCardCheckbox from '../SelectedCardCheckbox';
 
 interface CardProps {
@@ -16,9 +19,7 @@ function Card({ id, pageNumber, name, description }: CardProps) {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { selectedItemsIds } = useSelector(
-    (state: RootState) => state.selectedItems
-  );
+  const selectedItemsIds = useSelector(selectSelectedItemsIds);
 
   function handleCardClick(): void {
     navigate(`/catalog/${pageNumber}/${id}`);

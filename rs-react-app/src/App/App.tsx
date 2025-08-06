@@ -8,7 +8,6 @@ import {
 } from './helpers';
 import { SEARCH_ITEM_KEY, START_PAGE } from './constants';
 import type { Breed } from '../components/CardList/CardList';
-import { useLocalStorage } from '../hooks/useLocalStorage';
 import { fetchAll, fetchSearch } from '../api/API';
 import ThemeSelector from '../components/ThemeSelector';
 import AboutLink from '../components/AboutLink';
@@ -19,6 +18,7 @@ import MainSection from '../components/MainSection';
 import Pagination from '../components/Pagination';
 import FlyoutElement from '../components/FlyoutElement';
 import styles from './App.module.css';
+import { useLocalStorage } from '../hooks';
 
 function App() {
   const navigate = useNavigate();

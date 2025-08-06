@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import type { ItemState } from '../../src/redux/cardSlice';
+import type { ItemState } from '../../../src/store/slices/cardSlice';
 import reducer, {
   selectItem,
   unselectAll,
   unselectItem,
-} from '../../src/redux/cardSlice';
+} from '../../../src/store/slices/cardSlice';
 
 describe('cardSlice', () => {
   const initialState: ItemState = {

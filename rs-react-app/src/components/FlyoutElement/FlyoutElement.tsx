@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './FlyoutElement.module.css';
 import type { Breed } from '../CardList/CardList';
-import { unselectAll } from '../../redux/cardSlice';
+import {
+  selectSelectedItemsIds,
+  unselectAll,
+} from '../../store/slices/cardSlice';
 import { convertToCSV } from '../../utils/utils';
-import type { RootState } from '../../redux/store';
 
 interface Props {
   items: Breed[];
@@ -11,9 +13,7 @@ interface Props {
 
 function FlyoutElement({ items }: Props) {
   const dispatch = useDispatch();
-  const { selectedItemsIds } = useSelector(
-    (state: RootState) => state.selectedItems
-  );
+  const selectedItemsIds = useSelector(selectSelectedItemsIds);
 
   function onUnselectClick() {
     dispatch(unselectAll());

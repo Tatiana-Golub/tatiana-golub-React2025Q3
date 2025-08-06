@@ -6,7 +6,7 @@ import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
 import NotFound from './components/NotFound/NotFound.tsx';
 import { ThemeProvider } from './context/ThemeContex.tsx';
 import { Provider } from 'react-redux';
-import { store } from './redux/store.ts';
+import { store } from './store/store.ts';
 import DetailsCard from './components/DetailsCard/DetailsCard.tsx';
 import About from './components/About/About.tsx';
 import './index.css';

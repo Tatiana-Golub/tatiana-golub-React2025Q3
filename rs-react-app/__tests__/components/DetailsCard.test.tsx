@@ -1,10 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { mockBreedDetails } from '../__mocks__/breedDetails.mock';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import * as api from '../../src/api/API';
 import { fetchBreedMock } from '../__mocks__/fetchBreedMock';
-import DetailsCard from '../../src/components/DetailsCard';
+import { renderDetailsCard } from '../utils/helpers';
 
 beforeEach(() => {
   vi.spyOn(api, 'fetchBreed').mockImplementation(async (id: string) => {
@@ -21,13 +20,7 @@ beforeEach(() => {
 
 describe('DetailsCard', () => {
   it('render breed name in title properly', async () => {
-    render(
-      <MemoryRouter initialEntries={['/catalog/1/abys']}>
-        <Routes>
-          <Route path="/catalog/:page/:id" element={<DetailsCard />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderDetailsCard();
 
     const heading = await screen.findByRole('heading', {
       name: /breed details: abyssinian/i,
@@ -36,13 +29,7 @@ describe('DetailsCard', () => {
   });
 
   it('render temperament data properly', async () => {
-    render(
-      <MemoryRouter initialEntries={['/catalog/1/abys']}>
-        <Routes>
-          <Route path="/catalog/:page/:id" element={<DetailsCard />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderDetailsCard();
 
     const description = await screen.findByText(
       /active, energetic, independent, intelligent, gentle/i
@@ -51,39 +38,21 @@ describe('DetailsCard', () => {
   });
 
   it('render origin data properly', async () => {
-    render(
-      <MemoryRouter initialEntries={['/catalog/1/abys']}>
-        <Routes>
-          <Route path="/catalog/:page/:id" element={<DetailsCard />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderDetailsCard();
 
     const description = await screen.findByText(/egipt/i);
     expect(description).toBeInTheDocument();
   });
 
   it('render lifespan data properly', async () => {
-    render(
-      <MemoryRouter initialEntries={['/catalog/1/abys']}>
-        <Routes>
-          <Route path="/catalog/:page/:id" element={<DetailsCard />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderDetailsCard();
 
     const description = await screen.findByText(/14 - 15/i);
     expect(description).toBeInTheDocument();
   });
 
   it('render wikipedia link properly', async () => {
-    render(
-      <MemoryRouter initialEntries={['/catalog/1/abys']}>
-        <Routes>
-          <Route path="/catalog/:page/:id" element={<DetailsCard />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderDetailsCard();
 
     const link = await screen.findByRole('link', {
       name: mockBreedDetails.wikipedia_url,

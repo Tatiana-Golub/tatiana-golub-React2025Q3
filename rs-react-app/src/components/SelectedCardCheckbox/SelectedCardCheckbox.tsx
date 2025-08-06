@@ -17,7 +17,6 @@ function SelectedCardCheckbox(props: Props) {
       className={styles.cardCheckbox}
       checked={props.isSelected}
       onClick={handleClick}
-      onChange={() => {}}
     />
   );
 }

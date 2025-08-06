@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { mockBreeds } from '../__mocks__/breeds.mock';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from '../../src/redux/store';
+import { store } from '../../src/store/store';
 import CardList from '../../src/components/CardList';
 
 describe('CardList', () => {

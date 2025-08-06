@@ -5,7 +5,7 @@ import { fetchedBreeds, mockBreeds } from './__mocks__/breeds.mock';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from '../src/redux/store';
+import { store } from '../src/store/store';
 
 describe('App', () => {
   beforeEach(() => {
