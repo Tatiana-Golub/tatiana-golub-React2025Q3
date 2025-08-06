@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import About from '../../src/components/About';
 import { MemoryRouter } from 'react-router-dom';
+import About from '../../src/components/About';
 
 describe('About', () => {
   it('render title properly', () => {

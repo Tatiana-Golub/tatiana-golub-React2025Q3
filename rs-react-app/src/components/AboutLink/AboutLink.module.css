@@ -1,0 +1,21 @@
+.about-link {
+  text-decoration: none;
+  color: #a1a1a1;
+  font-family: var(--font-raleway);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: color 0.3s ease;
+  display: inline-block;
+  margin-left: auto;
+  margin-bottom: 2rem;
+}
+
+.about-link:hover {
+  color: var(--text-color);
+}
+
+.about-link.active {
+  color: wheat;
+  border-bottom: 2px solid wheat;
+}

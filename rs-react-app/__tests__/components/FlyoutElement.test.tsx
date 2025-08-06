@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { screen } from '@testing-library/react';
-import FlyoutElement from '../../src/components/FlyoutElement';
 import { mockBreeds } from '../__mocks__/breeds.mock';
 import { renderWithProviders } from '../utils/utils-for-tests';
+import FlyoutElement from '../../src/components/FlyoutElement';
 
 describe('FlyoutElement', () => {
   beforeAll(() => {

@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import DetailsCard from '../../src/components/DetailsCard';
 import { mockBreedDetails } from '../__mocks__/breedDetails.mock';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import * as api from '../../src/api/API';
 import { fetchBreedMock } from '../__mocks__/fetchBreedMock';
+import DetailsCard from '../../src/components/DetailsCard';
 
 beforeEach(() => {
   vi.spyOn(api, 'fetchBreed').mockImplementation(async (id: string) => {

@@ -1,13 +1,3 @@
-import './App.css';
-import {
-  AboutLink,
-  ErrorBoundary,
-  FlyoutElement,
-  MainSection,
-  Pagination,
-  SearchBar,
-  Spinner,
-} from '../components';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -17,10 +7,18 @@ import {
   parsePageNumber,
 } from './helpers';
 import { SEARCH_ITEM_KEY, START_PAGE } from './constants';
-import type { Breed } from '../components/CardList';
+import type { Breed } from '../components/CardList/CardList';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { fetchAll, fetchSearch } from '../api/API';
 import ThemeSelector from '../components/ThemeSelector';
+import AboutLink from '../components/AboutLink';
+import SearchBar from '../components/SearchBar';
+import Spinner from '../components/Spinner/Spinner';
+import ErrorBoundary from '../components/ErrorBoundary';
+import MainSection from '../components/MainSection';
+import Pagination from '../components/Pagination';
+import FlyoutElement from '../components/FlyoutElement';
+import styles from './App.module.css';
 
 function App() {
   const navigate = useNavigate();
@@ -86,8 +84,8 @@ function App() {
   const totalPageCount = getTotalPageCount(breeds);
 
   return (
-    <div className="app">
-      <div className="header">
+    <div className={styles.app}>
+      <div className={styles.header}>
         <ThemeSelector />
         <AboutLink />
       </div>

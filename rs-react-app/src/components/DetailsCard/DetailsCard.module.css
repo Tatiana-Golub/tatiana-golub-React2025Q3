@@ -1,0 +1,25 @@
+.error-message {
+  color: #ff0000;
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+.details-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: var(--details-text-color);
+  width: 100%;
+  max-width: 300px;
+  margin-top: 3rem;
+}
+
+.details-title {
+  color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+  .details-card {
+    width: 100%;
+  }
+}

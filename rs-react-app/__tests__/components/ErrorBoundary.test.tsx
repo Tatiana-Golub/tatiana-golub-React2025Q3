@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
-import ErrorBoundary from '../../src/components/ErrorBoundary';
 import { render, screen } from '@testing-library/react';
-import ErrorButton from '../../src/components/ErrorButton';
+import ErrorButton from '../../src/components/ErrorButton/ErrorButton';
 import userEvent from '@testing-library/user-event';
+import ErrorBoundary from '../../src/components/ErrorBoundary';
 
 describe('Error Boundary', () => {
   const ProblemChild = () => {

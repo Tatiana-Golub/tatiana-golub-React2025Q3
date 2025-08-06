@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import NotFound from '../../src/components/NotFound';
 import { MemoryRouter } from 'react-router';
+import NotFound from '../../src/components/NotFound';
 
 vi.mock('../../src/components/BackButton', () => ({
   default: () => <button>Go Back</button>,

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import Pagination from '../../src/components/Pagination';
+import { describe, expect, it } from 'vitest'
 import userEvent from '@testing-library/user-event';
+import Pagination from '../../src/components/Pagination';
 
 describe('Pagination', () => {
   it('call onNextPageClick when Next button is clicked', async () => {

@@ -1,4 +1,4 @@
-import type { Breed } from '../components/CardList';
+import type { Breed } from '../components/CardList/CardList';
 import { LIMIT } from './constants';
 
 export const hasBreeds = (breeds: Breed[]) => breeds.length > 0;

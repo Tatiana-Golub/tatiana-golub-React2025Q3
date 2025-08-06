@@ -11,9 +11,15 @@ export default defineConfig({
       'react-dom': path.resolve('./node_modules/react-dom'),
     },
   },
+  css: {
+    modules: {
+      localsConvention: 'camelCaseOnly',
+    },
+  },
   test: {
     environment: 'jsdom',
     globals: true,
+    css: true,
     setupFiles: './__tests__/setupTests.ts',
     coverage: {
       provider: 'v8',

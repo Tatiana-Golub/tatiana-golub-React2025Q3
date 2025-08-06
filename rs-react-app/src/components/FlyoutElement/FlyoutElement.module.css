@@ -1,0 +1,46 @@
+.flyout-element {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem 2rem;
+  background-color: var(--bg-color);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+  font-family: var(--font-raleway);
+  color: var(--text-color);
+}
+
+.selected-items-info {
+  font-size: 1.5rem;
+}
+
+.flyout-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.flyout-button {
+  background-color: var(--button-bg-color);
+  color: var(--text-color);
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.download-button {
+  text-decoration: none;
+}
+
+.flyout-button:hover {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+}
