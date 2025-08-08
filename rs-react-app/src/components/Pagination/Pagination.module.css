@@ -25,7 +25,7 @@
 
 .pagination-button:hover:enabled {
   color: var(--paginatoin-hover-color);
-  border-color: var(--paginatoin-hover-color);
+  border-color: var(--pagination-hover-color);
 }
 
 .pagination-button:disabled {

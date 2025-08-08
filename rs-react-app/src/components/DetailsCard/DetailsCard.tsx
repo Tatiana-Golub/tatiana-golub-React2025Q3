@@ -2,27 +2,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import styles from './DetailsCard.module.css';
 import { fetchBreed } from '../../api';
-import Spinner from '../Spinner/Spinner';
 import CloseButton from '../CloseButton';
-
-interface DetailedCardProps {
-  name: string;
-  temperament: string;
-  origin: string;
-  life_span: string;
-  wikipedia_url: string;
-}
+import Spinner from '../Spinner';
+import type { DetailsCardProps } from '../../types';
 
 function DetailsCard() {
   const navigate = useNavigate();
   const { id, pageNumber } = useParams();
-  const [data, setData] = useState<DetailedCardProps | null>(null);
+  const [data, setData] = useState<DetailsCardProps | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleCloseButton = (): void => {
     navigate(`/catalog/${pageNumber}`);
-  }
+  };
 
   const fetchData = (id: string) => {
     setLoading(true);
@@ -33,7 +26,7 @@ function DetailsCard() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
-      .then((data: DetailedCardProps) => {
+      .then((data: DetailsCardProps) => {
         setData(data);
       })
       .catch((err) => {
@@ -51,7 +44,11 @@ function DetailsCard() {
   if (!id) return null;
 
   if (loading) {
-    return <Spinner loading={loading} />;
+    return (
+      <div className={styles.loaderWrapper}>
+        <Spinner loading={loading} />
+      </div>
+    );
   }
 
   if (error) {

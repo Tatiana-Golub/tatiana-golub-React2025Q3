@@ -1,30 +1,20 @@
 import { Outlet } from 'react-router-dom';
 import styles from './CardList.module.css';
 import Card from '../Card/Card';
+import type { CardListProps } from '../../types';
 
-export interface Breed {
-  id: string;
-  name: string;
-  description: string;
-}
-
-export interface CardListProps {
-  pageNumber: string;
-  data: Breed[];
-}
-
-function CardList(props: CardListProps) {
-  if (props.data.length === 0)
+function CardList({ pageNumber, data }: CardListProps) {
+  if (data.length === 0)
     return <p className={styles.emptySearchMessage}>Nothing in search.</p>;
 
   return (
     <div className={styles.mainContainer}>
       <div className={styles.cardList}>
-        {props.data.map((item) => (
+        {data.map((item) => (
           <Card
             key={item.id}
             id={item.id}
-            pageNumber={props.pageNumber}
+            pageNumber={pageNumber}
             name={item.name}
             description={item.description}
           />

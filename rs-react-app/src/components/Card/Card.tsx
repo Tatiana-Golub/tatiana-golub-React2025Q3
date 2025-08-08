@@ -7,13 +7,7 @@ import {
   unselectItem,
 } from '../../store/slices/cardSlice';
 import SelectedCardCheckbox from '../SelectedCardCheckbox';
-
-interface CardProps {
-  id: string;
-  pageNumber: string;
-  name: string;
-  description: string;
-}
+import type { CardProps } from '../../types';
 
 function Card({ id, pageNumber, name, description }: CardProps) {
   const navigate = useNavigate();

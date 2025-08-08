@@ -1,12 +1,9 @@
+import type { CloseButtonprops } from '../../types';
 import styles from './CloseButton.module.css';
 
-interface CloseButtonprops {
-  onClick: () => void;
-}
-
-function CloseButton(props: CloseButtonprops) {
+function CloseButton({ onClick }: CloseButtonprops) {
   return (
-    <button className={styles.closeButton} onClick={props.onClick}>
+    <button className={styles.closeButton} onClick={onClick}>
       ✖
     </button>
   );

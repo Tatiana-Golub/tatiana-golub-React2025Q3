@@ -12,13 +12,13 @@ import { fetchAll, fetchSearch } from '../api/API';
 import ThemeSelector from '../components/ThemeSelector';
 import AboutLink from '../components/AboutLink';
 import SearchBar from '../components/SearchBar';
-import Spinner from '../components/Spinner/Spinner';
 import ErrorBoundary from '../components/ErrorBoundary';
 import MainSection from '../components/MainSection';
 import Pagination from '../components/Pagination';
 import FlyoutElement from '../components/FlyoutElement';
 import styles from './App.module.css';
 import { useLocalStorage } from '../hooks';
+import Spinner from '../components/Spinner';
 
 function App() {
   const navigate = useNavigate();

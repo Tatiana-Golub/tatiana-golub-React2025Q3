@@ -1,21 +1,20 @@
+import type { SelectedCardCheckboxProps } from '../../types';
 import styles from './SelectedCardCheckbox.module.css';
 
-interface Props {
-  isSelected: boolean;
-  onClick: (isChecked: boolean) => void;
-}
-
-function SelectedCardCheckbox(props: Props) {
+function SelectedCardCheckbox({
+  isSelected,
+  onClick,
+}: SelectedCardCheckboxProps) {
   function handleClick(e: { stopPropagation: () => void }) {
     e.stopPropagation();
-    props.onClick(!props.isSelected);
+    onClick(!isSelected);
   }
 
   return (
     <input
       type="checkbox"
       className={styles.cardCheckbox}
-      checked={props.isSelected}
+      checked={isSelected}
       onClick={handleClick}
     />
   );

@@ -1,18 +1,12 @@
-import type { Breed } from '../CardList/CardList';
+import type { MainSectionProps } from '../../types';
 import CardList from '../CardList/CardList';
 import styles from './MainSection.module.css';
 
-export interface MainSectionProps {
-  pageNumber: string;
-  error: string | null;
-  filteredBreeds: Breed[];
-}
-
-function MainSection(props: MainSectionProps) {
-  return props.error ? (
-    <p className={styles.errorMessage}>Error: {props.error}</p>
+function MainSection({ pageNumber, error, filteredBreeds }: MainSectionProps) {
+  return error ? (
+    <p className={styles.errorMessage}>Error: {error}</p>
   ) : (
-    <CardList pageNumber={props.pageNumber} data={props.filteredBreeds} />
+    <CardList pageNumber={pageNumber} data={filteredBreeds} />
   );
 }
 

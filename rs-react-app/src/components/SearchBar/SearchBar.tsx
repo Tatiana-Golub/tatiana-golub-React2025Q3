@@ -1,10 +1,7 @@
 import { useState, type ChangeEvent } from 'react';
 import styles from './SearchBar.module.css';
+import type { SearchBarProps } from '../../types';
 
-interface SearchBarProps {
-  input: string;
-  onSearch: (input: string) => void;
-}
 function SearchBar({ input: initialInput, onSearch }: SearchBarProps) {
   const [input, setInput] = useState(initialInput);
 

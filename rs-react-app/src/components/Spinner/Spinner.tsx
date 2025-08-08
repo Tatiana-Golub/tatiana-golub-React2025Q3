@@ -1,11 +1,8 @@
+import type { SpinnerProps } from '../../types';
 import styles from './Spinner.module.css';
 
-interface SpinnerProps {
-  loading: boolean;
-}
-
-function Spinner(props: SpinnerProps) {
-  if (!props.loading) {
+function Spinner({ loading }: SpinnerProps) {
+  if (!loading) {
     return null;
   }
 

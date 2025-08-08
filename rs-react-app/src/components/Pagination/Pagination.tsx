@@ -1,21 +1,12 @@
+import type { PaginationProps } from '../../types';
 import styles from './Pagination.module.css';
 
-type PaginationProps = {
-  onNextPageClick: () => void;
-  onPrevPageClick: () => void;
-  disable: {
-    left: boolean;
-    right: boolean;
-  };
-  nav?: {
-    current: number;
-    total: number;
-  };
-};
-
-const Pagination = (props: PaginationProps) => {
-  const { nav = null, disable, onNextPageClick, onPrevPageClick } = props;
-
+const Pagination = ({
+  onNextPageClick,
+  onPrevPageClick,
+  disable,
+  nav,
+}: PaginationProps) => {
   return (
     <div className={styles.pagination}>
       <button

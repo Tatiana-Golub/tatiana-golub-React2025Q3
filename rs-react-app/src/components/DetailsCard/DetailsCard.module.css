@@ -18,6 +18,14 @@
   color: var(--text-color);
 }
 
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  padding-top: 3rem;
+}
+
 @media (max-width: 768px) {
   .details-card {
     width: 100%;
