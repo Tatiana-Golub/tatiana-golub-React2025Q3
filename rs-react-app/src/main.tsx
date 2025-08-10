@@ -3,13 +3,14 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App/App.tsx';
 import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
-import About from './components/About.tsx';
-import NotFound from './components/NotFound.tsx';
-import { ABOUT_URL, START_URL } from './constants.tsx';
-import DetailsCard from './components/DetailsCard.tsx';
+import NotFound from './components/NotFound/NotFound.tsx';
 import { ThemeProvider } from './context/ThemeContex.tsx';
 import { Provider } from 'react-redux';
-import { store } from './redux/store.ts';
+import { store } from './store/store.ts';
+import DetailsCard from './components/DetailsCard/DetailsCard.tsx';
+import About from './components/About/About.tsx';
+import './index.css';
+import { ABOUT_URL, START_URL } from './constants.ts';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

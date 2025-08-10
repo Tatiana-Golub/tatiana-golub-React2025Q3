@@ -11,9 +11,15 @@ export default defineConfig({
       'react-dom': path.resolve('./node_modules/react-dom'),
     },
   },
+  css: {
+    modules: {
+      localsConvention: 'camelCaseOnly',
+    },
+  },
   test: {
     environment: 'jsdom',
     globals: true,
+    css: true,
     setupFiles: './__tests__/setupTests.ts',
     coverage: {
       provider: 'v8',
@@ -25,6 +31,7 @@ export default defineConfig({
         'src/index.{js,jsx,ts,tsx}',
         'src/setupTests.{js,ts}',
         'src/**/*.d.ts',
+        '**/types/**',
       ],
       thresholds: {
         global: {

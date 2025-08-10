@@ -1,5 +1,7 @@
-import type { Breed } from '../components/CardList';
+import type { Breed } from '../types';
 import { LIMIT } from './constants';
+import type { SerializedError } from '@reduxjs/toolkit';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 export const hasBreeds = (breeds: Breed[]) => breeds.length > 0;
 
@@ -17,3 +19,17 @@ export const filterBreeds = (breeds: Breed[], page: number): Breed[] => {
 };
 export const getTotalPageCount = (breeds: Breed[]): number =>
   Math.ceil(breeds.length / LIMIT);
+
+export const getErrorMessage = (
+  error: FetchBaseQueryError | SerializedError | undefined
+): string | null => {
+  if (!error) return null;
+
+  if ('status' in error) {
+    const errMsg = 'error' in error ? error.error : JSON.stringify(error.data);
+
+    return errMsg;
+  }
+
+  return error.message || null;
+};

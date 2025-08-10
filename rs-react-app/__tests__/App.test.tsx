@@ -1,71 +1,34 @@
-import { describe, expect, it, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import App from '../src/App/App';
-import { fetchedBreeds, mockBreeds } from './__mocks__/breeds.mock';
+import { describe, expect, it } from 'vitest';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from '../src/redux/store';
+import { renderWithProviders } from './utils/utils-for-tests';
+import { server } from './__mocks__/api/server';
+import { API_URL } from './__mocks__/api/handlers';
+import { http, HttpResponse } from 'msw';
+import { App } from '../src/App';
 
 describe('App', () => {
-  beforeEach(() => {
-    vi.restoreAllMocks();
-    localStorage.clear();
-  });
-
   it('make initial API call on component mount', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: vi.fn().mockResolvedValue(mockBreeds),
-    });
+    renderWithProviders(<App />);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledTimes(1);
-    });
-
-    expect(await screen.findByText(/persian/i)).toBeInTheDocument();
-    expect(await screen.findByText(/maine coon/i)).toBeInTheDocument();
+    expect(await screen.findByText(/abyssinian/i)).toBeInTheDocument();
+    expect(await screen.findByText(/siamese/i)).toBeInTheDocument();
   });
 
   it('handle API error responses', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 500,
-      json: vi.fn(),
-    });
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>
-      </Provider>
+    server.use(
+      http.get(API_URL, () => {
+        return new Response(null, { status: 500 });
+      })
     );
 
-    expect(await screen.findByText(/Error: HTTP 500/i)).toBeInTheDocument();
+    renderWithProviders(<App />);
+
+    expect(await screen.findByText(/error/i)).toBeInTheDocument();
   });
 
   it('trigger search callback with trimmed input when button is clicked', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: vi.fn().mockResolvedValue(mockBreeds),
-    });
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithProviders(<App />);
 
     const input = screen.getByPlaceholderText(/search for cats/i);
     const button = screen.getByRole('button', { name: /search/i });
@@ -77,75 +40,47 @@ describe('App', () => {
   });
 
   it('handle search term from localStorage', async () => {
-    localStorage.setItem('searchItem', 'siam');
+    localStorage.setItem('searchItem', 'siamese');
 
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: vi.fn().mockResolvedValue([{ id: '1', name: 'Siam' }]),
-    });
+    renderWithProviders(<App />);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/search?q=siam'),
-        expect.anything()
-      );
-    });
+    expect(await screen.findByText(/siamese/i)).toBeInTheDocument();
   });
 
-  it('go to the next page when Next button is clicked', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => fetchedBreeds,
-    });
+  it('show spinner while loading', async () => {
+    localStorage.clear();
+    renderWithProviders(<App />);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>
-      </Provider>
-    );
+    expect(screen.getByTestId('spinner')).toBeInTheDocument();
 
-    expect(await screen.findByText(/breed 1/i)).toBeInTheDocument();
-    expect(screen.getByText('1 / 2')).toBeInTheDocument();
-    const nextButton = screen.getByRole('button', { name: /next/i });
-    await userEvent.click(nextButton);
-    expect(await screen.findByText(/breed 5/i)).toBeInTheDocument();
-    expect(screen.getByText('2 / 2')).toBeInTheDocument();
+    expect(await screen.findByText(/abyssinian/i)).toBeInTheDocument();
+    expect(screen.queryByTestId('spinner')).not.toBeInTheDocument();
   });
 
-  it('go to the previous page when Prev button is clicked', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => fetchedBreeds,
-    });
+  it('use cached data on second render without refetching', async () => {
+    const fetchSpy = vi.fn();
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>
-      </Provider>
+    server.use(
+      http.get(API_URL, () => {
+        fetchSpy();
+        return HttpResponse.json([
+          { id: 'abys', name: 'Abyssinian' },
+          { id: 'siam', name: 'Siamese' },
+        ]);
+      })
     );
 
-    expect(await screen.findByText(/breed 1/i)).toBeInTheDocument();
-    expect(screen.getByText('1 / 2')).toBeInTheDocument();
-    const nextButton = screen.getByRole('button', { name: /next/i });
-    await userEvent.click(nextButton);
-    expect(await screen.findByText(/breed 5/i)).toBeInTheDocument();
-    expect(screen.getByText('2 / 2')).toBeInTheDocument();
+    const { store, unmount } = renderWithProviders(<App />);
 
-    const prevButton = screen.getByRole('button', { name: /prev/i });
-    await userEvent.click(prevButton);
-    expect(await screen.findByText(/breed 1/i)).toBeInTheDocument();
-    expect(screen.getByText('1 / 2')).toBeInTheDocument();
+    expect(await screen.findByText(/abyssinian/i)).toBeInTheDocument();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    unmount();
+    renderWithProviders(<App />, {
+      store,
+    });
+
+    expect(await screen.findByText(/abyssinian/i)).toBeInTheDocument();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 });

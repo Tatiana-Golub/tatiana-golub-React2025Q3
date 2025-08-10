@@ -1,35 +1,67 @@
-import './App.css';
-import {
-  AboutLink,
-  ErrorBoundary,
-  FlyoutElement,
-  MainSection,
-  Pagination,
-  SearchBar,
-  Spinner,
-} from '../components';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   filterBreeds,
+  getErrorMessage,
   getTotalPageCount,
   hasBreeds,
   parsePageNumber,
 } from './helpers';
 import { SEARCH_ITEM_KEY, START_PAGE } from './constants';
-import type { Breed } from '../components/CardList';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { fetchAll, fetchSearch } from '../api/API';
 import ThemeSelector from '../components/ThemeSelector';
+import AboutLink from '../components/AboutLink';
+import SearchBar from '../components/SearchBar';
+import ErrorBoundary from '../components/ErrorBoundary';
+import MainSection from '../components/MainSection';
+import Pagination from '../components/Pagination';
+import FlyoutElement from '../components/FlyoutElement';
+import styles from './App.module.css';
+import { useLocalStorage } from '../hooks';
+import Spinner from '../components/Spinner';
+import type { Breed } from '../types';
+import { useFetchAllQuery, useFetchSearchQuery } from '../store/api/Api';
+import RefreshButton from '../components/RefreshButton/RefreshButton';
 
 function App() {
   const navigate = useNavigate();
   const { pageNumber } = useParams();
   const [searchTerm, setSearchTerm] = useLocalStorage(SEARCH_ITEM_KEY, '');
-  const [breeds, setBreeds] = useState<Breed[]>([]);
   const [page, setPage] = useState(parsePageNumber(pageNumber));
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const {
+    data: allBreeds,
+    error: allError,
+    isFetching: allLoading,
+    refetch: refetchAll,
+  } = useFetchAllQuery('', { skip: searchTerm !== '' });
+
+  const {
+    data: searchedBreeds,
+    error: searchError,
+    isFetching: searchLoading,
+    refetch: refetchSearch,
+  } = useFetchSearchQuery(searchTerm, { skip: searchTerm === '' });
+
+  const breeds: Breed[] = useMemo(
+    () => (searchTerm === '' ? (allBreeds ?? []) : (searchedBreeds ?? [])),
+    [searchTerm, allBreeds, searchedBreeds]
+  );
+
+  const loading = allLoading || searchLoading;
+  const error = allError || searchError;
+
+  const handleSearch = (input: string) => {
+    setSearchTerm(input);
+    navigateToPage(START_PAGE);
+  };
+
+  const handleRefresh = () => {
+    if (searchTerm === '') {
+      refetchAll();
+    } else {
+      refetchSearch();
+    }
+  };
 
   const navigateToPage = useCallback((page: number) => {
     setPage(page);
@@ -51,56 +83,25 @@ function App() {
     navigateToPage(newPage);
   }, [navigateToPage, page]);
 
-  const fetchData = useCallback(
-    (input: string) => {
-      setSearchTerm(input);
-
-      const responce = input === '' ? fetchAll() : fetchSearch(input);
-
-      setLoading(true);
-      setError(null);
-
-      responce
-        .then((res) => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res.json();
-        })
-        .then((data: Breed[]) => {
-          setBreeds(data);
-        })
-        .catch((err) => {
-          setError(err.message);
-        })
-        .finally(() => {
-          navigateToPage(START_PAGE);
-          setLoading(false);
-        });
-    },
-    [navigateToPage, setSearchTerm]
-  );
-
-  useEffect(() => {
-    fetchData(searchTerm);
-  }, [fetchData, searchTerm]);
-
   const totalPageCount = getTotalPageCount(breeds);
 
   return (
-    <div className="app">
-      <div className="header">
+    <div className={styles.app}>
+      <div className={styles.header}>
         <ThemeSelector />
         <AboutLink />
       </div>
       <h1>Breeds Cat-alog</h1>
-      <SearchBar input={searchTerm} onSearch={fetchData} />
+      <SearchBar input={searchTerm} onSearch={handleSearch} />
+      <RefreshButton onClick={handleRefresh} />
       <Spinner loading={loading} />
       <ErrorBoundary>
         <MainSection
           pageNumber={pageNumber || '1'}
-          error={error}
+          error={getErrorMessage(error)}
           filteredBreeds={filterBreeds(breeds, page)}
         />
-        {!loading && hasBreeds(breeds) && (
+        {!loading && !error && hasBreeds(breeds) && (
           <Pagination
             onNextPageClick={handleNextPageClick}
             onPrevPageClick={handlePrevPageClick}

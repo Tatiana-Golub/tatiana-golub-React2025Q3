@@ -1,49 +1,29 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { renderWithRouterAndProviders } from '../utils/utils-for-tests';
+import { server } from '../__mocks__/api/server';
+import { http } from 'msw';
+import userEvent from '@testing-library/user-event';
 import DetailsCard from '../../src/components/DetailsCard';
-import { mockBreedDetails } from '../__mocks__/breedDetails.mock';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import * as api from '../../src/api/API';
-import { fetchBreedMock } from '../__mocks__/fetchBreedMock';
-
-beforeEach(() => {
-  vi.spyOn(api, 'fetchBreed').mockImplementation(async (id: string) => {
-    if (id === 'abys') {
-      return fetchBreedMock(mockBreedDetails);
-    }
-    return {
-      ok: false,
-      status: 404,
-      json: async () => ({}),
-    } as Response;
-  });
-});
+import { API_URL } from '../__mocks__/api/handlers';
 
 describe('DetailsCard', () => {
+  beforeEach(() => {
+    server.resetHandlers();
+  });
+
   it('render breed name in title properly', async () => {
-    render(
-      <MemoryRouter initialEntries={['/catalog/1/abys']}>
-        <Routes>
-          <Route path="/catalog/:page/:id" element={<DetailsCard />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderWithRouterAndProviders(<DetailsCard />);
 
     const heading = await screen.findByRole('heading', {
       name: /breed details: abyssinian/i,
     });
+
     expect(heading).toBeInTheDocument();
   });
 
   it('render temperament data properly', async () => {
-    render(
-      <MemoryRouter initialEntries={['/catalog/1/abys']}>
-        <Routes>
-          <Route path="/catalog/:page/:id" element={<DetailsCard />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
+    renderWithRouterAndProviders(<DetailsCard />);
     const description = await screen.findByText(
       /active, energetic, independent, intelligent, gentle/i
     );
@@ -51,46 +31,47 @@ describe('DetailsCard', () => {
   });
 
   it('render origin data properly', async () => {
-    render(
-      <MemoryRouter initialEntries={['/catalog/1/abys']}>
-        <Routes>
-          <Route path="/catalog/:page/:id" element={<DetailsCard />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
+    renderWithRouterAndProviders(<DetailsCard />);
     const description = await screen.findByText(/egipt/i);
     expect(description).toBeInTheDocument();
   });
 
   it('render lifespan data properly', async () => {
-    render(
-      <MemoryRouter initialEntries={['/catalog/1/abys']}>
-        <Routes>
-          <Route path="/catalog/:page/:id" element={<DetailsCard />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
+    renderWithRouterAndProviders(<DetailsCard />);
     const description = await screen.findByText(/14 - 15/i);
     expect(description).toBeInTheDocument();
   });
 
   it('render wikipedia link properly', async () => {
-    render(
-      <MemoryRouter initialEntries={['/catalog/1/abys']}>
-        <Routes>
-          <Route path="/catalog/:page/:id" element={<DetailsCard />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderWithRouterAndProviders(<DetailsCard />);
 
     const link = await screen.findByRole('link', {
-      name: mockBreedDetails.wikipedia_url,
+      name: 'https://en.wikipedia.org/wiki/Abyssinian_(cat)',
     });
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', mockBreedDetails.wikipedia_url);
+    expect(link).toHaveAttribute(
+      'href',
+      'https://en.wikipedia.org/wiki/Abyssinian_(cat)'
+    );
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', 'noreferrer');
+  });
+
+  it('show error message and refresh button on API error', async () => {
+    server.use(
+      http.get(`${API_URL}/abys`, () => new Response(null, { status: 500 }))
+    );
+
+    renderWithRouterAndProviders(<DetailsCard />);
+
+    expect(
+      await screen.findByText(/error loading breed details/i)
+    ).toBeInTheDocument();
+
+    const refreshButton = screen.getByRole('button', { name: /refresh/i });
+
+    expect(refreshButton).toBeInTheDocument();
+
+    await userEvent.click(refreshButton);
   });
 });

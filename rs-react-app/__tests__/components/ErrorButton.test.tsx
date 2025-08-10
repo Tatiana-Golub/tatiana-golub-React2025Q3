@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
-import ErrorBoundary from '../../src/components/ErrorBoundary';
+import ErrorBoundary from '../../src/components/ErrorBoundary/ErrorBoundary';
 import { render, screen } from '@testing-library/react';
-import ErrorButton from '../../src/components/ErrorButton';
 import userEvent from '@testing-library/user-event';
+import ErrorButton from '../../src/components/ErrorButton';
 
 describe('Error Button', () => {
   let consoleError: ReturnType<typeof vi.spyOn>;

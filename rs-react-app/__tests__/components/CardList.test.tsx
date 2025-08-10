@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import CardList from '../../src/components/CardList';
 import { mockBreeds } from '../__mocks__/breeds.mock';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from '../../src/redux/store';
+import { store } from '../../src/store/store';
+import CardList from '../../src/components/CardList';
 
 describe('CardList', () => {
   it('render correct number of items when data is provided', () => {
@@ -20,7 +20,7 @@ describe('CardList', () => {
     expect(cards).toHaveLength(mockBreeds.length);
   });
 
-  it('correctly displays item names and descriptions', () => {
+  it('correctly display item names and descriptions', () => {
     render(
       <Provider store={store}>
         <MemoryRouter>

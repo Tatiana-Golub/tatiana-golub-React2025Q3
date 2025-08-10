@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import CloseButton from '../../src/components/CloseButton';
 import userEvent from '@testing-library/user-event';
+import CloseButton from '../../src/components/CloseButton';
 
 describe('CloseButton', () => {
   it('renders the close button with ✖ symbol', () => {

@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import Card from '../../src/components/Card';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from '../../src/redux/store';
+import { store } from '../../src/store/store';
 import { renderWithProviders } from '../utils/utils-for-tests';
 import userEvent from '@testing-library/user-event';
+import Card from '../../src/components/Card';
 
 describe('Card', () => {
   it('render name and description properly', () => {
