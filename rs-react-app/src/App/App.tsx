@@ -92,6 +92,7 @@ function App() {
       </div>
       <h1>Breeds Cat-alog</h1>
       <SearchBar input={searchTerm} onSearch={handleSearch} />
+      <RefreshButton onClick={handleRefresh} />
       <Spinner loading={loading} />
       <ErrorBoundary>
         <MainSection

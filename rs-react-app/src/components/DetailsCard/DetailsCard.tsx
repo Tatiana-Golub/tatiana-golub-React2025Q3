@@ -59,6 +59,7 @@ function DetailsCard() {
           </a>
         </p>
       </div>
+      <RefreshButton onClick={handleRefreshButton} />
     </div>
   );
 }
