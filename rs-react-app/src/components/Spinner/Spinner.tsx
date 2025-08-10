@@ -7,7 +7,7 @@ function Spinner({ loading }: SpinnerProps) {
   }
 
   return (
-    <div className={styles.loader}>
+    <div className={styles.loader} data-testid="spinner">
       <div className={styles.innerCircle}></div>
     </div>
   );

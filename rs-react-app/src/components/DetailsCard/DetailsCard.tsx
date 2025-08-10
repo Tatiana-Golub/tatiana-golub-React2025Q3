@@ -33,9 +33,9 @@ function DetailsCard() {
 
   if (error) {
     return (
-      <div>
+      <div className={styles.errorContainer}>
         <p className={styles.errorMessage}>Error loading breed details</p>
-        <button onClick={() => refetch()}>Retry</button>
+        <RefreshButton onClick={handleRefreshButton} />
       </div>
     );
   }

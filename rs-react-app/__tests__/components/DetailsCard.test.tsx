@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 import DetailsCard from '../../src/components/DetailsCard';
 import { API_URL } from '../__mocks__/api/handlers';
 
-describe('DetailsCard with RTK Query and msw', () => {
+describe('DetailsCard', () => {
   beforeEach(() => {
     server.resetHandlers();
   });
@@ -57,7 +57,7 @@ describe('DetailsCard with RTK Query and msw', () => {
     expect(link).toHaveAttribute('rel', 'noreferrer');
   });
 
-  it('show error message and retry button on API error', async () => {
+  it('show error message and refresh button on API error', async () => {
     server.use(
       http.get(`${API_URL}/abys`, () => new Response(null, { status: 500 }))
     );
@@ -68,9 +68,10 @@ describe('DetailsCard with RTK Query and msw', () => {
       await screen.findByText(/error loading breed details/i)
     ).toBeInTheDocument();
 
-    const retryButton = screen.getByRole('button', { name: /retry/i });
-    expect(retryButton).toBeInTheDocument();
+    const refreshButton = screen.getByRole('button', { name: /refresh/i });
 
-    await userEvent.click(retryButton);
+    expect(refreshButton).toBeInTheDocument();
+
+    await userEvent.click(refreshButton);
   });
 });

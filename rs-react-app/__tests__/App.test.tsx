@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { screen } from '@testing-library/react';
-import App from '../src/App/App';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from './utils/utils-for-tests';
 import { server } from './__mocks__/api/server';
 import { API_URL } from './__mocks__/api/handlers';
-import { http } from 'msw';
+import { http, HttpResponse } from 'msw';
+import { App } from '../src/App';
 
 describe('App', () => {
   it('make initial API call on component mount', async () => {
@@ -45,5 +45,42 @@ describe('App', () => {
     renderWithProviders(<App />);
 
     expect(await screen.findByText(/siamese/i)).toBeInTheDocument();
+  });
+
+  it('show spinner while loading', async () => {
+    localStorage.clear();
+    renderWithProviders(<App />);
+
+    expect(screen.getByTestId('spinner')).toBeInTheDocument();
+
+    expect(await screen.findByText(/abyssinian/i)).toBeInTheDocument();
+    expect(screen.queryByTestId('spinner')).not.toBeInTheDocument();
+  });
+
+  it('use cached data on second render without refetching', async () => {
+    const fetchSpy = vi.fn();
+
+    server.use(
+      http.get(API_URL, () => {
+        fetchSpy();
+        return HttpResponse.json([
+          { id: 'abys', name: 'Abyssinian' },
+          { id: 'siam', name: 'Siamese' },
+        ]);
+      })
+    );
+
+    const { store, unmount } = renderWithProviders(<App />);
+
+    expect(await screen.findByText(/abyssinian/i)).toBeInTheDocument();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    unmount();
+    renderWithProviders(<App />, {
+      store,
+    });
+
+    expect(await screen.findByText(/abyssinian/i)).toBeInTheDocument();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 });

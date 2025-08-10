@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   filterBreeds,
+  getErrorMessage,
   getTotalPageCount,
   hasBreeds,
   parsePageNumber,
@@ -97,10 +98,10 @@ function App() {
       <ErrorBoundary>
         <MainSection
           pageNumber={pageNumber || '1'}
-          error={error ? String(error) : null}
+          error={getErrorMessage(error)}
           filteredBreeds={filterBreeds(breeds, page)}
         />
-        {!loading && hasBreeds(breeds) && (
+        {!loading && !error && hasBreeds(breeds) && (
           <Pagination
             onNextPageClick={handleNextPageClick}
             onPrevPageClick={handlePrevPageClick}

@@ -1,4 +1,3 @@
-
 import type { RefreshButtonprops } from '../../types';
 import styles from './RefreshButton.module.css';
 
