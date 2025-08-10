@@ -7,11 +7,17 @@
 .details-card {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   color: var(--details-text-color);
   width: 100%;
   max-width: 300px;
   margin-top: 3rem;
+}
+
+.details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .details-title {

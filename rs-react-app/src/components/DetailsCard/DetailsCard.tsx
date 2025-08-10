@@ -1,58 +1,43 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import styles from './DetailsCard.module.css';
-import { fetchBreed } from '../../api';
 import CloseButton from '../CloseButton';
 import Spinner from '../Spinner';
-import type { DetailsCardProps } from '../../types';
+import { useFetchBreedQuery } from '../../store/api/Api';
+import RefreshButton from '../RefreshButton';
 
 function DetailsCard() {
   const navigate = useNavigate();
   const { id, pageNumber } = useParams();
-  const [data, setData] = useState<DetailsCardProps | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+
+  const { data, error, isFetching, refetch } = useFetchBreedQuery(id ?? '', {
+    skip: !id,
+  });
 
   const handleCloseButton = (): void => {
     navigate(`/catalog/${pageNumber}`);
   };
 
-  const fetchData = (id: string) => {
-    setLoading(true);
-    setError(null);
-
-    fetchBreed(id)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data: DetailsCardProps) => {
-        setData(data);
-      })
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  const handleRefreshButton = (): void => {
+    refetch();
   };
-
-  useEffect(() => {
-    if (id) fetchData(id);
-  }, [id]);
 
   if (!id) return null;
 
-  if (loading) {
+  if (isFetching) {
     return (
       <div className={styles.loaderWrapper}>
-        <Spinner loading={loading} />
+        <Spinner loading={isFetching} />
       </div>
     );
   }
 
   if (error) {
-    return <p className={styles.errorMessage}>Error: {error}</p>;
+    return (
+      <div>
+        <p className={styles.errorMessage}>Error loading breed details</p>
+        <button onClick={() => refetch()}>Retry</button>
+      </div>
+    );
   }
 
   if (!data) {
@@ -62,7 +47,7 @@ function DetailsCard() {
   return (
     <div className={styles.detailsCard}>
       <CloseButton onClick={handleCloseButton} />
-      <>
+      <div className={styles.detailsContent}>
         <h3 className={styles.detailsTitle}>Breed Details: {data.name}</h3>
         <p>Temperament: {data.temperament}</p>
         <p>Origin: {data.origin}</p>
@@ -73,7 +58,7 @@ function DetailsCard() {
             {data.wikipedia_url}
           </a>
         </p>
-      </>
+      </div>
     </div>
   );
 }

@@ -1,12 +1,12 @@
 import type { PaginationProps } from '../../types';
 import styles from './Pagination.module.css';
 
-const Pagination = ({
+function Pagination({
   onNextPageClick,
   onPrevPageClick,
   disable,
   nav,
-}: PaginationProps) => {
+}: PaginationProps) {
   return (
     <div className={styles.pagination}>
       <button
@@ -32,6 +32,6 @@ const Pagination = ({
       </button>
     </div>
   );
-};
+}
 
 export default Pagination;

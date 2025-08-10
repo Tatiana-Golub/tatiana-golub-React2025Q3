@@ -1,4 +1,4 @@
-import type { Breed } from '../components/CardList/CardList';
+import type { Breed } from '../types';
 
 export const convertToCSV = (selectedItemsIds: string[], items: Breed[]) => {
   const dataToWrite = filterData(selectedItemsIds, items);

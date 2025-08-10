@@ -20,7 +20,7 @@ describe('CardList', () => {
     expect(cards).toHaveLength(mockBreeds.length);
   });
 
-  it('correctly displays item names and descriptions', () => {
+  it('correctly display item names and descriptions', () => {
     render(
       <Provider store={store}>
         <MemoryRouter>

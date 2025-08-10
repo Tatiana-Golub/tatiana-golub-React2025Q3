@@ -7,6 +7,7 @@
   border-radius: 50%;
   background: linear-gradient(0deg, #ffffff 50%, rgba(249, 211, 180) 100%);
   animation: spin 1s linear infinite;
+  margin-top: 1rem;
 }
 
 .inner-circle {
