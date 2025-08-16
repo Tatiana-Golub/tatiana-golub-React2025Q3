@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useEffect, useState, type ReactNode } from 'react';
 import { getStorageValue } from '../hooks/helpers';
 
@@ -25,7 +27,7 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
       'data-theme',
       darkMode ? 'dark' : 'light'
     );
-    localStorage.setItem('darkMode', darkMode ? 'on' : 'off');
+    // localStorage.setItem('darkMode', darkMode ? 'on' : 'off');
   }, [darkMode]);
 
   return (

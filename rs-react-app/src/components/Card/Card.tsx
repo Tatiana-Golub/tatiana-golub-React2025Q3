@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Card.module.css';
 import {
@@ -8,16 +7,11 @@ import {
 } from '../../store/slices/cardSlice';
 import SelectedCardCheckbox from '../SelectedCardCheckbox';
 import type { CardProps } from '../../types';
+import Link from 'next/link';
 
 function Card({ id, pageNumber, name, description }: CardProps) {
-  const navigate = useNavigate();
-
   const dispatch = useDispatch();
   const selectedItemsIds = useSelector(selectSelectedItemsIds);
-
-  function handleCardClick(): void {
-    navigate(`/catalog/${pageNumber}/${id}`);
-  }
 
   function onClickCheckbox(isChecked: boolean) {
     if (isChecked) {
@@ -30,7 +24,7 @@ function Card({ id, pageNumber, name, description }: CardProps) {
   const isSelected = selectedItemsIds.includes(id);
 
   return (
-    <div className={styles.card} onClick={handleCardClick}>
+    <Link href={`/catalog/${pageNumber}/${id}`} className={styles.card}>
       <div className={styles.cardHeader}>
         <h3 className={styles.cardTitle}>{name}</h3>
         <SelectedCardCheckbox
@@ -39,7 +33,7 @@ function Card({ id, pageNumber, name, description }: CardProps) {
         />
       </div>
       <p>{description}</p>
-    </div>
+    </Link>
   );
 }
 

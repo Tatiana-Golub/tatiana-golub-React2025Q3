@@ -1,5 +1,5 @@
 import type { Breed } from '../types';
-import { LIMIT } from './constants';
+import { LIMIT } from '../constants';
 import type { SerializedError } from '@reduxjs/toolkit';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 

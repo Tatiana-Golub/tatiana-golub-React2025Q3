@@ -1,18 +1,12 @@
-import { useNavigate } from 'react-router-dom';
 import styles from './BackButton.module.css';
 import { START_URL } from '../../constants';
+import Link from 'next/link';
 
 function BackButton() {
-  const navigate = useNavigate();
-
-  function handleClick() {
-    navigate(START_URL);
-  }
-
   return (
-    <button className={styles.backButton} onClick={handleClick}>
+    <Link href={START_URL} className={styles.backButton}>
       Back to Home
-    </button>
+    </Link>
   );
 }
 
