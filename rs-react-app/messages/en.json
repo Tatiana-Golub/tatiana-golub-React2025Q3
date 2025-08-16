@@ -1,0 +1,44 @@
+{
+  "About": {
+    "title": "About Breeds Cat-alog App",
+    "developer": "This application is developed by <strong>Tatiana Golub</strong>, a passionate English translator and web developer.",
+    "course": "It is part of the <link>RS School React Course</link> task."
+  },
+  "NotFound": {
+    "description": "Page Not Found"
+  },
+  "AboutLink": {
+    "title": "About Cat-alog"
+  },
+  "BackButton": {
+    "title": "Back to Home"
+  },
+  "CardList": {
+    "error": "Nothing in search"
+  },
+  "ErrorBoundary": {
+    "message": "Something bad happened. Reload the page."
+  },
+  "Flyout": {
+    "message": "SometItem(s) selected",
+    "unselect": "Unselect all",
+    "download": "Download"
+  },
+  "MainSection": {
+    "error": "Error"
+  },
+  "Pagination": {
+    "forward": "Next",
+    "back": "Prev"
+  },
+  "RefreshButton": {
+    "title": "Refresh"
+  },
+  "SearchBar": {
+    "placeholder": "Search for cats",
+    "search": "Search"
+  },
+  "Catalog": {
+    "heading": "Breeds Cat-alog"
+  }
+}

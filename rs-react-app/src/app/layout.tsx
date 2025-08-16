@@ -6,17 +6,17 @@ export const metadata: Metadata = {
   title: 'Cat-alog',
 };
 
-export default function RootLayout({
-  children,
-}: {
+interface RootLayoutProps {
   children: React.ReactNode;
-}) {
+  params: { locale?: string };
+}
+
+export default function RootLayout({ children, params }: RootLayoutProps) {
+  const lang = params?.locale || 'en';
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body>
-        <ThemeProvider>
-          <div id="root">{children}</div>
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

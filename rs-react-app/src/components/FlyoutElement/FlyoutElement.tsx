@@ -6,8 +6,10 @@ import {
 } from '../../store/slices/cardSlice';
 import { convertToCSV } from '../../utils/utils';
 import type { FlyoutElementProps } from '../../types';
+import { useTranslations } from 'next-intl';
 
 function FlyoutElement({ items }: FlyoutElementProps) {
+  const t = useTranslations('Flyout');
   const dispatch = useDispatch();
   const selectedItemsIds = useSelector(selectSelectedItemsIds);
 
@@ -22,18 +24,18 @@ function FlyoutElement({ items }: FlyoutElementProps) {
   return (
     <div className={styles.flyoutElement}>
       <span className={styles.selectedItemsInfo}>
-        Item(s) selected: {selectedItemsCount}
+        {t('message')}: {selectedItemsCount}
       </span>
       <div className={styles.flyoutButtons}>
         <button className={styles.flyoutButton} onClick={onUnselectClick}>
-          Unselect all
+          {t('unselect')}
         </button>
         <a
           href={convertToCSV(selectedItemsIds, items)}
           download={`${selectedItemsCount}_items.csv`}
           className={`${styles.flyoutButton} ${styles.downloadButton}`}
         >
-          Download
+          {t('download')}
         </a>
       </div>
     </div>

@@ -1,8 +1,10 @@
 import { useState, type ChangeEvent } from 'react';
 import styles from './SearchBar.module.css';
 import type { SearchBarProps } from '../../types';
+import { useTranslations } from 'next-intl';
 
 function SearchBar({ input: initialInput, onSearch }: SearchBarProps) {
+  const t = useTranslations('SearchBar');
   const [input, setInput] = useState(initialInput);
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,13 +25,13 @@ function SearchBar({ input: initialInput, onSearch }: SearchBarProps) {
     <div className={styles.search}>
       <input
         type="text"
-        placeholder="Search for cats"
+        placeholder={t('placeholder')}
         value={input}
         onChange={onInputChange}
         onKeyDown={onEnterPress}
       />
       <button className={styles.searchButton} onClick={onButtonClick}>
-        Search
+        {t('search')}
       </button>
     </div>
   );

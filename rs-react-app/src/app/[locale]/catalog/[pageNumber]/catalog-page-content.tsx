@@ -25,6 +25,8 @@ import RefreshButton from '../../../../components/RefreshButton';
 import Spinner from './loading';
 import ErrorBoundary from '../../../../components/ErrorBoundary';
 import styles from './catalog-page-content.module.css';
+import LocaleSwitcher from '../../../../components/LocaleSwitcher/LocaleSwitcher';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   initialBreeds: Breed[];
@@ -37,6 +39,7 @@ export default function CatalogPageContent({
   initialSearchTerm,
   initialPage,
 }: Props) {
+  const t = useTranslations('Catalog');
   const router = useRouter();
   const { pageNumber } = useParams<{ pageNumber: string }>();
   const [searchTerm, setSearchTerm] = useLocalStorage(
@@ -106,15 +109,16 @@ export default function CatalogPageContent({
 
   return (
     <div className={styles.app}>
+      <LocaleSwitcher />
       <div className={styles.header}>
         <ThemeSelector />
         <AboutLink />
       </div>
-      <h1 className={styles.heading}>Breeds Cat-alog</h1>
+      <h1 className={styles.heading}>{t('heading')}</h1>
       <SearchBar input={searchTerm} onSearch={handleSearch} />
       <RefreshButton onClick={handleRefresh} />
       <Spinner loading={loading} />
-      <ErrorBoundary>
+      <ErrorBoundary errorText={useTranslations('ErrorBoundary')('message')}>
         <MainSection
           pageNumber={pageNumber || '1'}
           error={getErrorMessage(error)}

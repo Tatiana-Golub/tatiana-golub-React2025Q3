@@ -1,29 +1,35 @@
+import { useTranslations } from 'next-intl';
 import BackButton from '../../../components/BackButton';
 import styles from './about.module.css';
+import { createNavigation } from 'next-intl/navigation';
 
-function About() {
+export default function About() {
+  const t = useTranslations('About');
+  const { Link } = createNavigation();
+
   return (
     <div className={styles.about}>
-      <h1 className={styles.aboutTitle}>About Breeds Cat-alog App</h1>
+      <h1 className={styles.aboutTitle}>{t('title')}</h1>
       <p className={styles.aboutDescription}>
-        This application is developed by <strong>Tatiana Golub</strong>, a
-        passionate English translator and web developer.
+        {t.rich('developer', {
+          strong: (chunks) => <strong>{chunks}</strong>,
+        })}
       </p>
+
       <p className={styles.aboutDescription}>
-        It is part of the{' '}
-        <a
-          href="https://rs.school/courses/reactjs"
-          target="_blank"
-          className={styles.schoolLink}
-          rel="noreferrer"
-        >
-          RS School React Course
-        </a>{' '}
-        task.
+        {t.rich('course', {
+          link: (children: React.ReactNode) => (
+            <Link
+              href="https://rs.school/courses/reactjs"
+              target="_blank"
+              className={styles.schoolLink}
+            >
+              {children}
+            </Link>
+          ),
+        })}
       </p>
       <BackButton />
     </div>
   );
 }
-
-export default About;
