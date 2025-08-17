@@ -41,7 +41,7 @@ export default function CatalogPageContent({
 }: Props) {
   const t = useTranslations('Catalog');
   const router = useRouter();
-  const { pageNumber } = useParams<{ pageNumber: string }>();
+  const { pageNumber } = useParams<{ pageNumber: string[] }>();
   const [searchTerm, setSearchTerm] = useLocalStorage(
     'search',
     initialSearchTerm
@@ -79,9 +79,9 @@ export default function CatalogPageContent({
   const navigateToPage = useCallback(
     (page: number) => {
       setPage(page);
-      router.push(`/catalog/${page}?search=${encodeURIComponent(searchTerm)}`);
+      router.push(`/catalog/${page}`);
     },
-    [router, searchTerm]
+    [router]
   );
 
   const handleSearch = (input: string) => {
@@ -120,7 +120,7 @@ export default function CatalogPageContent({
       <Spinner loading={loading} />
       <ErrorBoundary errorText={useTranslations('ErrorBoundary')('message')}>
         <MainSection
-          pageNumber={pageNumber || '1'}
+          pageNumber={pageNumber[0] || '1'}
           error={getErrorMessage(error)}
           filteredBreeds={filterBreeds(breeds, page)}
         />

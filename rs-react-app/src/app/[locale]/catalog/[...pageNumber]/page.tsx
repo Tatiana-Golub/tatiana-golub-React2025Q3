@@ -21,7 +21,7 @@ export default async function CatalogPage({
   params,
   searchParams,
 }: {
-  params: Promise<{ pageNumber: string }>;
+  params: Promise<{ pageNumber: string[] }>;
   searchParams: Promise<{ search?: string }>;
 }) {
   const { pageNumber } = await params;
@@ -38,7 +38,7 @@ export default async function CatalogPage({
     <CatalogPageContent
       initialBreeds={initialBreeds}
       initialSearchTerm={search ?? ''}
-      initialPage={Number(pageNumber) || START_PAGE}
+      initialPage={Number(pageNumber[0]) || START_PAGE}
     />
   );
 }

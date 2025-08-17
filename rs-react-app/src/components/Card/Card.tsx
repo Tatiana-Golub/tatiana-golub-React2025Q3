@@ -9,7 +9,7 @@ import SelectedCardCheckbox from '../SelectedCardCheckbox';
 import type { CardProps } from '../../types';
 import Link from 'next/link';
 
-function Card({ id, pageNumber, name, description }: CardProps) {
+function Card({ id, pageNumber, name, description, locale }: CardProps) {
   const dispatch = useDispatch();
   const selectedItemsIds = useSelector(selectSelectedItemsIds);
 
@@ -24,7 +24,10 @@ function Card({ id, pageNumber, name, description }: CardProps) {
   const isSelected = selectedItemsIds.includes(id);
 
   return (
-    <Link href={`/catalog/${pageNumber}/${id}`} className={styles.card}>
+    <Link
+      href={`/${locale}/catalog/${pageNumber}/${id}`}
+      className={styles.card}
+    >
       <div className={styles.cardHeader}>
         <h3 className={styles.cardTitle}>{name}</h3>
         <SelectedCardCheckbox

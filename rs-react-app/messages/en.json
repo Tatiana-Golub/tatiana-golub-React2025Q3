@@ -40,5 +40,13 @@
   },
   "Catalog": {
     "heading": "Breeds Cat-alog"
+  },
+  "DetailsCard": {
+    "error": "Error loading breed details",
+    "message": "Breed not found",
+    "title": "Breed Details",
+    "temperament": "Temperament",
+    "origin": "Origin",
+    "lifespan": "Lifespan"
   }
 }

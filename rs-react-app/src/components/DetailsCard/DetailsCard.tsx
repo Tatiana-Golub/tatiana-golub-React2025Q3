@@ -1,20 +1,28 @@
-import { useNavigate, useParams } from 'react-router-dom';
+'use client';
+
 import styles from './DetailsCard.module.css';
 import CloseButton from '../CloseButton';
 import Spinner from '../Spinner';
 import { useFetchBreedQuery } from '../../store/api/Api';
 import RefreshButton from '../RefreshButton';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
-function DetailsCard() {
-  const navigate = useNavigate();
-  const { id, pageNumber } = useParams();
+interface DetailsPageProps {
+  id: string;
+  pageNumber: string;
+}
+
+function DetailsCard({ id, pageNumber }: DetailsPageProps) {
+  const t = useTranslations('DetailsCard');
+  const router = useRouter();
 
   const { data, error, isFetching, refetch } = useFetchBreedQuery(id ?? '', {
     skip: !id,
   });
 
   const handleCloseButton = (): void => {
-    navigate(`/catalog/${pageNumber}`);
+    router.push(`/catalog/${pageNumber}`);
   };
 
   const handleRefreshButton = (): void => {
@@ -34,24 +42,32 @@ function DetailsCard() {
   if (error) {
     return (
       <div className={styles.errorContainer}>
-        <p className={styles.errorMessage}>Error loading breed details</p>
+        <p className={styles.errorMessage}>{t('error')}</p>
         <RefreshButton onClick={handleRefreshButton} />
       </div>
     );
   }
 
   if (!data) {
-    return <p className={styles.errorMessage}>Breed not found</p>;
+    return <p className={styles.errorMessage}>{t('message')}</p>;
   }
 
   return (
     <div className={styles.detailsCard}>
       <CloseButton onClick={handleCloseButton} />
       <div className={styles.detailsContent}>
-        <h3 className={styles.detailsTitle}>Breed Details: {data.name}</h3>
-        <p>Temperament: {data.temperament}</p>
-        <p>Origin: {data.origin}</p>
-        <p>Lifespan: {data.life_span}</p>
+        <h3 className={styles.detailsTitle}>
+          {t('title')}: {data.name}
+        </h3>
+        <p>
+          {t('temperament')}: {data.temperament}
+        </p>
+        <p>
+          {t('origin')}: {data.origin}
+        </p>
+        <p>
+          {t('lifespan')}: {data.life_span}
+        </p>
         <p>
           Wikipedia:{' '}
           <a href={data.wikipedia_url} target="_blank" rel="noreferrer">
