@@ -9,11 +9,11 @@ export const convertToCSV = (selectedItemsIds: string[], items: Breed[]) => {
   return URL.createObjectURL(blob);
 };
 
-function filterData(selectedItemsIds: string[], items: Breed[]) {
+export function filterData(selectedItemsIds: string[], items: Breed[]) {
   return items.filter((item) => selectedItemsIds.includes(item.id));
 }
 
-function generateCsv(dataToWrite: Breed[]) {
+export function generateCsv(dataToWrite: Breed[]) {
   const headers = ['ID', 'Name', 'Description'];
   const csv = [
     '\uFEFF',
