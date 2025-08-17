@@ -10,7 +10,7 @@ export function useLocalStorage(
   const [value, setValue] = useState(getStorageValue(key, defaultValue));
 
   useEffect(() => {
-    //localStorage.setItem(key, value);
+    localStorage.setItem(key, value);
   }, [key, value]);
 
   return [value, setValue];

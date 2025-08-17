@@ -1,7 +1,10 @@
-// 'use client';
+'use client';
 
 export const getStorageValue = (key: string, defaultValue: string) => {
-  // const saved = localStorage.getItem(key);
-  const saved = defaultValue;
+  if (typeof window === 'undefined') {
+    return defaultValue;
+  }
+
+  const saved = localStorage.getItem(key);
   return saved || defaultValue;
 };
