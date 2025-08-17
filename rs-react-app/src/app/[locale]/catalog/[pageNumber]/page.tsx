@@ -7,7 +7,7 @@ async function getInitialBreeds(): Promise<Breed[]> {
     headers: {
       'x-api-key':
         'live_3CbgMb13ZFjtyL22iSqK3JakXhPppFZhgxM52h0cDrmKmGoOZ0s8HUbPRtyn3p6l',
-    }
+    },
   });
 
   if (!result.ok) {
@@ -27,17 +27,18 @@ export default async function CatalogPage({
   const { pageNumber } = await params;
   const { search } = await searchParams;
 
+  let initialBreeds;
   try {
-    const initialBreeds = await getInitialBreeds();
-
-    return (
-      <CatalogPageContent
-        initialBreeds={initialBreeds}
-        initialSearchTerm={search ?? ''}
-        initialPage={Number(pageNumber) || START_PAGE}
-      />
-    );
-  } catch (error) {
-    if (error instanceof Error) return <div>Error: {error.message}</div>;
+    initialBreeds = await getInitialBreeds();
+  } catch {
+    initialBreeds = new Array<Breed>();
   }
+
+  return (
+    <CatalogPageContent
+      initialBreeds={initialBreeds}
+      initialSearchTerm={search ?? ''}
+      initialPage={Number(pageNumber) || START_PAGE}
+    />
+  );
 }
