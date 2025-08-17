@@ -2,7 +2,6 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '../../i18n/routing';
 import { ReduxProvider } from '../../store/ReduxProvider';
-import LocaleSwitcher from '../../components/LocaleSwitcher/LocaleSwitcher';
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
