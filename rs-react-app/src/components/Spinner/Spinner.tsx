@@ -1,4 +1,4 @@
-import type { SpinnerProps } from '../../types';
+import { SpinnerProps } from '../../types';
 import styles from './Spinner.module.css';
 
 function Spinner({ loading }: SpinnerProps) {

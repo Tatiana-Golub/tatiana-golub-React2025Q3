@@ -1,0 +1,31 @@
+.app {
+  padding: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.heading {
+  font-size: 3rem;
+  letter-spacing: 0.9px;
+  background: linear-gradient(90deg,
+      var(--title-color-main) 0%,
+      var(--title-color-gradient) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: fit-content;
+  line-height: 1.2;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  width: 100%;
+  margin-bottom: 2rem;
+}

@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useEffect, useState, type ReactNode } from 'react';
 import { getStorageValue } from '../hooks/helpers';
 

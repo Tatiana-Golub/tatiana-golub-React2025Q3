@@ -1,12 +1,15 @@
-import { NavLink } from 'react-router-dom';
+import { useTranslations } from 'next-intl';
 import { ABOUT_URL } from '../../constants';
+import { Link } from '../../i18n/navigation';
 import { getClassname } from './helpers';
 
 function AboutLink() {
+  const t = useTranslations('AboutLink');
+
   return (
-    <NavLink to={ABOUT_URL} className={getClassname}>
-      About Cat-alog
-    </NavLink>
+    <Link href={ABOUT_URL} className={getClassname()}>
+      {t('title')}
+    </Link>
   );
 }
 

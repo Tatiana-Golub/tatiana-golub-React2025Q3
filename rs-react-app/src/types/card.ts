@@ -3,4 +3,5 @@ export interface CardProps {
   pageNumber: string;
   name: string;
   description: string;
+  locale: string;
 }

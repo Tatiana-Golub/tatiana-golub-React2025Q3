@@ -1,0 +1,23 @@
+.not-found {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.title {
+  margin: 0 auto 5rem;
+  font-size: 3rem;
+  letter-spacing: 0.9px;
+  background: linear-gradient(90deg,
+      var(--title-color-main) 0%,
+      var(--title-color-gradient) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: fit-content;
+  line-height: 1.2;
+}

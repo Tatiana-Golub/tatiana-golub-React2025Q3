@@ -1,3 +1,5 @@
+'use client';
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { Breed, DetailsCardProps } from '../../types';
 

@@ -1,18 +1,15 @@
-import { useNavigate } from 'react-router-dom';
 import styles from './BackButton.module.css';
 import { START_URL } from '../../constants';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 function BackButton() {
-  const navigate = useNavigate();
-
-  function handleClick() {
-    navigate(START_URL);
-  }
+  const t = useTranslations('BackButton');
 
   return (
-    <button className={styles.backButton} onClick={handleClick}>
-      Back to Home
-    </button>
+    <Link href={START_URL} className={styles.backButton}>
+      {t('title')}
+    </Link>
   );
 }
 

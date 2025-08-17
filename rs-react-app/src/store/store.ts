@@ -1,3 +1,5 @@
+'use client';
+
 import { configureStore } from '@reduxjs/toolkit';
 import selectedItemsReducer from './slices/cardSlice';
 import { Api } from './api/Api';

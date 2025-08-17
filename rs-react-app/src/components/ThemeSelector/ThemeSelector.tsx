@@ -1,3 +1,5 @@
+'use client';
+
 import { DARK_THEME_ICON, LIGHT_THEME_ICON } from './constants';
 import { useTheme } from '../../hooks/useTheme';
 import styles from './ThemeSelector.module.css';

@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import type { PaginationProps } from '../../types';
 import styles from './Pagination.module.css';
 
@@ -7,6 +10,8 @@ function Pagination({
   disable,
   nav,
 }: PaginationProps) {
+  const t = useTranslations('Pagination');
+
   return (
     <div className={styles.pagination}>
       <button
@@ -15,7 +20,7 @@ function Pagination({
         onClick={onPrevPageClick}
         disabled={disable.left}
       >
-        Prev
+        {t('back')}
       </button>
       {nav && (
         <span className={styles.pageNumber}>
@@ -28,7 +33,7 @@ function Pagination({
         onClick={onNextPageClick}
         disabled={disable.right}
       >
-        Next
+        {t('forward')}
       </button>
     </div>
   );

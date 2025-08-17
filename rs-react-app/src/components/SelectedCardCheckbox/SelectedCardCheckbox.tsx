@@ -6,7 +6,6 @@ function SelectedCardCheckbox({
   onClick,
 }: SelectedCardCheckboxProps) {
   function handleClick(e: { stopPropagation: () => void }) {
-    e.stopPropagation();
     onClick(!isSelected);
   }
 
@@ -15,7 +14,8 @@ function SelectedCardCheckbox({
       type="checkbox"
       className={styles.cardCheckbox}
       checked={isSelected}
-      onClick={handleClick}
+      onChange={handleClick}
+      onClick={(e) => e.stopPropagation()}
     />
   );
 }

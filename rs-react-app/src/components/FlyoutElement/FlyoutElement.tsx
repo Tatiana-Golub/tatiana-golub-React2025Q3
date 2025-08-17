@@ -4,15 +4,36 @@ import {
   selectSelectedItemsIds,
   unselectAll,
 } from '../../store/slices/cardSlice';
-import { convertToCSV } from '../../utils/utils';
 import type { FlyoutElementProps } from '../../types';
+import { useTranslations } from 'next-intl';
+import { useRef } from 'react';
+import { filterData } from '../../utils/utils';
 
 function FlyoutElement({ items }: FlyoutElementProps) {
+  const linkRef = useRef<HTMLAnchorElement | null>(null);
+  const t = useTranslations('Flyout');
   const dispatch = useDispatch();
   const selectedItemsIds = useSelector(selectSelectedItemsIds);
 
   function onUnselectClick() {
     dispatch(unselectAll());
+  }
+
+  async function handleDownload() {
+    const response = await fetch('/api/export-csv', {
+      method: 'POST',
+      body: JSON.stringify(filterData(selectedItemsIds, items)),
+    });
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    if (linkRef.current) {
+      linkRef.current.href = url;
+      linkRef.current.download = `${selectedItemsCount}_items.csv`;
+      linkRef.current.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
   }
 
   const selectedItemsCount = selectedItemsIds.length;
@@ -22,19 +43,19 @@ function FlyoutElement({ items }: FlyoutElementProps) {
   return (
     <div className={styles.flyoutElement}>
       <span className={styles.selectedItemsInfo}>
-        Item(s) selected: {selectedItemsCount}
+        {t('message')}: {selectedItemsCount}
       </span>
       <div className={styles.flyoutButtons}>
         <button className={styles.flyoutButton} onClick={onUnselectClick}>
-          Unselect all
+          {t('unselect')}
         </button>
-        <a
-          href={convertToCSV(selectedItemsIds, items)}
-          download={`${selectedItemsCount}_items.csv`}
+        <button
           className={`${styles.flyoutButton} ${styles.downloadButton}`}
+          onClick={handleDownload}
         >
-          Download
-        </a>
+          {t('download')}
+        </button>
+        <a ref={linkRef} style={{ display: 'none' }} />
       </div>
     </div>
   );

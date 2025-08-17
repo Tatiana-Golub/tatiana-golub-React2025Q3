@@ -1,0 +1,52 @@
+{
+  "About": {
+    "title": "О приложении Breeds Cat-alog",
+    "developer": "Приложение разработано <strong>Татьяной Голуб</strong>, увлечённым переводчиком английского языка и веб-разработчиком.",
+    "course": "Это часть задания в рамках <link>RS School React Course</link>."
+  },
+  "NotFound": {
+    "description": "Страница не найдена"
+  },
+  "AboutLink": {
+    "title": "О приложении Кoт-алог"
+  },
+  "BackButton": {
+    "title": "На главную"
+  },
+  "CardList": {
+    "error": "Не найдено"
+  },
+  "ErrorBoundary": {
+    "message": "Что-то пошло не так. Перезагрузите страницу."
+  },
+  "Flyout": {
+    "message": "Выбрано позиций",
+    "unselect": "Отменить выбор",
+    "download": "Загрузить"
+  },
+  "MainSection": {
+    "error": "Ошибка"
+  },
+  "Pagination": {
+    "forward": "Вперед",
+    "back": "Назад"
+  },
+  "RefreshButton": {
+    "title": "Обновить"
+  },
+  "SearchBar": {
+    "placeholder": "Найти породу",
+    "search": "Поиск"
+  },
+  "Catalog": {
+    "heading": "Кoт-алог пород кошек"
+  },
+  "DetailsCard": {
+    "error": "Ошибка при загрузке данных о породе",
+    "message": "Порода не найдена",
+    "title": "Данные о породе",
+    "temperament": "Темперамент",
+    "origin": "Происхождение",
+    "lifespan": "Продолжительность жизни"
+  }
+}
