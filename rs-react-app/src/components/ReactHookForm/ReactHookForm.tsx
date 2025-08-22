@@ -1,27 +1,26 @@
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import '../shared/Form.css';
-
-interface IFormInput {
-  name: string;
-  age: number;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  gender: string;
-  country: string;
-  picture: FileList;
-  terms: boolean;
-}
+import { IFormInput } from '../../types/interface';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from '../../utils/validationSchema';
 
 export function ReactHookForm() {
   const {
     register,
+    handleSubmit,
     formState: { errors, isValid },
-  } = useForm<IFormInput>();
+  } = useForm<IFormInput>({
+    resolver: yupResolver(schema),
+    mode: 'onChange',
+  });
+
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log('Form submitted:', data);
+  };
 
   return (
     <div className="form-wrapper">
-      <form className="form-container" onSubmit={() => console.log}>
+      <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
         <h2 className="form-title">React Hook Form</h2>
         <div className="form-group full-width">
           <label htmlFor="name">Name</label>
@@ -31,7 +30,7 @@ export function ReactHookForm() {
 
         <div className="form-group half-width">
           <label htmlFor="age">Age</label>
-          <input id="age" type="number" {...register('age')} />
+          <input id="age" type="text" {...register('age')} />
           {errors.age && <p className="error">{errors.age.message}</p>}
         </div>
 
@@ -95,17 +94,17 @@ export function ReactHookForm() {
         </div>
 
         <div className="form-group full-width">
-          <label htmlFor="picture">Upload Picture</label>
+          <label htmlFor="image">Upload Picture</label>
           <div className="file-input">
             <input
-              id="picture"
+              id="image"
               type="file"
               accept=".png, .jpeg, .jpg"
-              {...register('picture')}
+              {...register('image')}
             />
             <span className="file-button">Choose File</span>
           </div>
-          {errors.picture && <p className="error">{errors.picture.message}</p>}
+          {errors.image && <p className="error">{errors.image.message}</p>}
         </div>
 
         <div className="checkbox-group">

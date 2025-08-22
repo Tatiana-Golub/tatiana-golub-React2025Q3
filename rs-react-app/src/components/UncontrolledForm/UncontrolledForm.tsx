@@ -1,18 +1,11 @@
-import { useRef } from 'react';
-import './UncontrolledForm.css';
-
-interface IFormInput {
-  name: string;
-  age: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  gender: string;
-  country: string;
-  terms: boolean;
-}
+import { useRef, useState } from 'react';
+import '../shared/Form.css';
+import * as yup from 'yup';
+import { IFormInput } from '../../types/interface';
+import { schema } from '../../utils/validationSchema';
 
 export function UncontrolledForm() {
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -23,25 +16,74 @@ export function UncontrolledForm() {
     female: useRef<HTMLInputElement>(null),
   };
   const termsRef = useRef<HTMLInputElement>(null);
-  const pictureRef = useRef<HTMLInputElement>(null);
+  const imageRef = useRef<HTMLInputElement>(null);
   const countryRef = useRef<HTMLSelectElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrors({});
+
+    const gender = genderRefs.male.current?.checked
+      ? 'male'
+      : genderRefs.female.current?.checked
+        ? 'female'
+        : '';
+
+    const file = imageRef.current?.files?.[0] || null;
+
+    const formData: IFormInput = {
+      name: nameRef.current?.value || '',
+      age: ageRef.current?.value || '',
+      email: emailRef.current?.value || '',
+      password: passwordRef.current?.value || '',
+      confirmPassword: confirmPasswordRef.current?.value || '',
+      gender,
+      country: countryRef.current?.value || '',
+      terms: termsRef.current?.checked || false,
+      image: file as File,
+    };
+
+    try {
+      await schema.validate(formData, { abortEarly: false });
+    } catch (err) {
+      if (err instanceof yup.ValidationError) {
+        const newErrors: Record<string, string> = {};
+        err.inner.forEach((error) => {
+          if (error.path) newErrors[error.path] = error.message;
+        });
+        setErrors(newErrors);
+      }
+    }
+  };
 
   return (
     <div className="form-wrapper">
-      <form className="form-container">
+      <form className="form-container" onSubmit={handleSubmit}>
+        <h2 className="form-title">Uncontrolled Form</h2>
         <div className="form-group full-width">
           <label htmlFor="name">Name</label>
           <input ref={nameRef} id="name" name="name" type="text" />
+          {errors.name ? (
+            <p className="error">{errors.name}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="form-group half-width">
           <label htmlFor="age">Age</label>
-          <input ref={ageRef} id="age" name="age" type="number" />
+          <input ref={ageRef} id="age" name="age" type="text" />
+          {errors.age && <p className="error">{errors.age}</p>}
         </div>
 
         <div className="form-group half-width">
           <label htmlFor="email">Email</label>
           <input ref={emailRef} id="email" name="email" type="email" />
+          {errors.email ? (
+            <p className="error">{errors.email}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="form-group half-width">
@@ -52,6 +94,11 @@ export function UncontrolledForm() {
             name="password"
             type="password"
           />
+          {errors.password ? (
+            <p className="error">{errors.password}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="form-group half-width">
@@ -62,6 +109,11 @@ export function UncontrolledForm() {
             name="confirmPassword"
             type="password"
           />
+          {errors.confirmPassword ? (
+            <p className="error">{errors.confirmPassword}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="radio-group full-width">
@@ -88,6 +140,11 @@ export function UncontrolledForm() {
               Female
             </label>
           </div>
+          {errors.gender ? (
+            <p className="error">{errors.gender}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="country-group full-width">
@@ -95,21 +152,31 @@ export function UncontrolledForm() {
           <select ref={countryRef} id="country" name="country">
             <option value="">--Select Country--</option>
           </select>
+          {errors.counry ? (
+            <p className="error">{errors.country}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="form-group full-width">
-          <label htmlFor="picture">Upload Picture</label>
+          <label htmlFor="image">Upload Image</label>
           <div className="file-input">
             <input
-              ref={pictureRef}
+              ref={imageRef}
               type="file"
-              id="picture"
-              name="picture"
+              id="image"
+              name="image"
               accept=".png, .jpeg, .jpg"
             />
             <span className="file-button">Choose File</span>
             <span className="file-name">No file chosen</span>
           </div>
+          {errors.image ? (
+            <p className="error">{errors.image}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="checkbox-group">
@@ -117,6 +184,11 @@ export function UncontrolledForm() {
             <input ref={termsRef} id="terms" name="terms" type="checkbox" />
             Accept Terms & Conditions.
           </label>
+          {errors.terms ? (
+            <p className="error">{errors.terms}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="form-submit full-width">
