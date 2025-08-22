@@ -25,26 +25,40 @@ export function ReactHookForm() {
         <div className="form-group full-width">
           <label htmlFor="name">Name</label>
           <input id="name" type="text" {...register('name')} />
-          {errors.name && <p className="error">{errors.name.message}</p>}
+          {errors.name ? (
+            <p className="error">{errors.name.message}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="form-group half-width">
           <label htmlFor="age">Age</label>
           <input id="age" type="text" {...register('age')} />
-          {errors.age && <p className="error">{errors.age.message}</p>}
+          {errors.age ? (
+            <p className="error">{errors.age.message}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="form-group half-width">
           <label htmlFor="email">Email</label>
           <input id="email" type="email" {...register('email')} />
-          {errors.email && <p className="error">{errors.email.message}</p>}
+          {errors.email ? (
+            <p className="error">{errors.email.message}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="form-group half-width">
           <label htmlFor="password">Password</label>
           <input id="password" type="password" {...register('password')} />
-          {errors.password && (
+          {errors.password ? (
             <p className="error">{errors.password.message}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
           )}
         </div>
 
@@ -55,8 +69,10 @@ export function ReactHookForm() {
             type="password"
             {...register('confirmPassword')}
           />
-          {errors.confirmPassword && (
+          {errors.confirmPassword ? (
             <p className="error">{errors.confirmPassword.message}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
           )}
         </div>
 
@@ -82,7 +98,11 @@ export function ReactHookForm() {
               Female
             </label>
           </div>
-          {errors.gender && <p className="error">{errors.gender.message}</p>}
+          {errors.gender ? (
+            <p className="error">{errors.gender.message}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="country-group full-width">
@@ -90,7 +110,11 @@ export function ReactHookForm() {
           <select id="country" {...register('country')}>
             <option value="">--Select Country--</option>
           </select>
-          {errors.country && <p className="error">{errors.country.message}</p>}
+          {errors.country ? (
+            <p className="error">{errors.country.message}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="form-group full-width">
@@ -104,7 +128,11 @@ export function ReactHookForm() {
             />
             <span className="file-button">Choose File</span>
           </div>
-          {errors.image && <p className="error">{errors.image.message}</p>}
+          {errors.image ? (
+            <p className="error">{errors.image.message}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="checkbox-group">
@@ -112,7 +140,11 @@ export function ReactHookForm() {
             <input id="terms" type="checkbox" {...register('terms')} />
             Accept Terms & Conditions.
           </label>
-          {errors.terms && <p className="error">{errors.terms.message}</p>}
+          {errors.terms ? (
+            <p className="error">{errors.terms.message}</p>
+          ) : (
+            <p className="error">&nbsp;</p>
+          )}
         </div>
 
         <div className="form-submit full-width">
