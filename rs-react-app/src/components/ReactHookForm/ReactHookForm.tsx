@@ -3,8 +3,15 @@ import '../shared/Form.css';
 import { IFormInput } from '../../types/interface';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from '../../utils/validationSchema';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCountries,
+  setReactHookFormData,
+} from '../../store/slices/formSlice';
 
 export function ReactHookForm() {
+  const countries = useSelector(selectCountries);
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -15,7 +22,7 @@ export function ReactHookForm() {
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log('Form submitted:', data);
+    dispatch(setReactHookFormData(data));
   };
 
   return (
@@ -108,7 +115,9 @@ export function ReactHookForm() {
         <div className="country-group full-width">
           <label htmlFor="country">Country</label>
           <select id="country" {...register('country')}>
-            <option value="">--Select Country--</option>
+            {countries.map((country) => (
+              <option key={country}>{country}</option>
+            ))}
           </select>
           {errors.country ? (
             <p className="error">{errors.country.message}</p>

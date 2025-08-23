@@ -3,8 +3,15 @@ import '../shared/Form.css';
 import * as yup from 'yup';
 import { IFormInput } from '../../types/interface';
 import { schema } from '../../utils/validationSchema';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCountries,
+  setUncontrolledFormData,
+} from '../../store/slices/formSlice';
 
 export function UncontrolledForm() {
+  const dispatch = useDispatch();
+  const countries = useSelector(selectCountries);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
@@ -33,7 +40,7 @@ export function UncontrolledForm() {
 
     const formData: IFormInput = {
       name: nameRef.current?.value || '',
-      age: ageRef.current?.value || '',
+      age: ageRef.current?.value ? Number(ageRef.current.value) : 0,
       email: emailRef.current?.value || '',
       password: passwordRef.current?.value || '',
       confirmPassword: confirmPasswordRef.current?.value || '',
@@ -45,6 +52,7 @@ export function UncontrolledForm() {
 
     try {
       await schema.validate(formData, { abortEarly: false });
+      dispatch(setUncontrolledFormData(formData));
     } catch (err) {
       if (err instanceof yup.ValidationError) {
         const newErrors: Record<string, string> = {};
@@ -150,7 +158,9 @@ export function UncontrolledForm() {
         <div className="country-group full-width">
           <label htmlFor="country">Country</label>
           <select ref={countryRef} id="country" name="country">
-            <option value="">--Select Country--</option>
+            {countries.map((country) => (
+              <option key={country}>{country}</option>
+            ))}
           </select>
           {errors.counry ? (
             <p className="error">{errors.country}</p>
