@@ -118,7 +118,7 @@ export function ReactHookForm() {
         </div>
 
         <div className="form-group full-width">
-          <label htmlFor="image">Upload Picture</label>
+          <label htmlFor="image">Upload Image</label>
           <div className="file-input">
             <input
               id="image"
