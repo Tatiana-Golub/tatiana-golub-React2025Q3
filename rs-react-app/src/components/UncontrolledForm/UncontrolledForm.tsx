@@ -72,7 +72,7 @@ export function UncontrolledForm() {
 
         <div className="form-group half-width">
           <label htmlFor="age">Age</label>
-          <input ref={ageRef} id="age" name="age" type="text" />
+          <input ref={ageRef} id="age" name="age" type="number" />
           {errors.age && <p className="error">{errors.age}</p>}
         </div>
 

@@ -34,7 +34,7 @@ export function ReactHookForm() {
 
         <div className="form-group half-width">
           <label htmlFor="age">Age</label>
-          <input id="age" type="text" {...register('age')} />
+          <input id="age" type="number" {...register('age')} />
           {errors.age ? (
             <p className="error">{errors.age.message}</p>
           ) : (

@@ -21,14 +21,12 @@ export const schema = yup.object().shape({
     .required('Name is required')
     .matches(/^[A-Z][a-zA-Z]*$/, 'First letter must be uppercase'),
   age: yup
-    .string()
-    .required('Age is required')
-    .test('is-number', 'Age must be a number', (value) => !isNaN(Number(value)))
-    .test(
-      'non-negative',
-      'Age cannot be negative',
-      (value) => Number(value) >= 0
-    ),
+    .number()
+    .transform((value, originalValue) =>
+      originalValue === '' ? undefined : value
+    )
+    .required('Age required')
+    .min(0, 'Age must be non-negative'),
   email: yup.string().required('Email is required').email('Invalid email'),
   password: yup
     .string()
