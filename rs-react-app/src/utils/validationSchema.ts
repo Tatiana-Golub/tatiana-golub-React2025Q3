@@ -46,14 +46,16 @@ export const schema = yup.object().shape({
     .oneOf([true], 'You must accept Terms and Conditions')
     .required('You must accept Terms and Conditions'),
   image: yup
-    .mixed<File>()
+    .mixed<FileList>()
     .required('Required')
-    .test('is-valid-type', 'Not a valid image type', (file) =>
-      file instanceof File
-        ? isValidFileType(file.name.toLowerCase(), 'image')
-        : false
-    )
-    .test('is-valid-size', 'Max allowed size is 100KB', (file) =>
-      file instanceof File ? file.size <= MAX_FILE_SIZE : false
-    ),
+    .test('is-valid-type', 'Not a valid image type', (fileList) => {
+      if (!fileList || fileList.length === 0) return false;
+      const file = fileList[0];
+      return isValidFileType(file.name.toLowerCase(), 'image');
+    })
+    .test('is-valid-size', 'Max allowed size is 100KB', (fileList) => {
+      if (!fileList || fileList.length === 0) return false;
+      const file = fileList[0];
+      return file.size <= MAX_FILE_SIZE;
+    }),
 });

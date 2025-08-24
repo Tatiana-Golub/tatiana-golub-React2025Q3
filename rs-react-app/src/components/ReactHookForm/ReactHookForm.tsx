@@ -8,21 +8,31 @@ import {
   selectCountries,
   setReactHookFormData,
 } from '../../store/slices/formSlice';
+import { formDataToUserData } from '../../utils/dataConverter';
 
-export function ReactHookForm() {
+interface ReactHookFormProps {
+  onSubmitSuccess?: () => void;
+}
+
+export function ReactHookForm({ onSubmitSuccess }: ReactHookFormProps) {
   const countries = useSelector(selectCountries);
   const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isValid },
   } = useForm<IFormInput>({
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    dispatch(setReactHookFormData(data));
+  const selectedFile = watch('image');
+
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    const userData = await formDataToUserData(data);
+    dispatch(setReactHookFormData(userData));
+    onSubmitSuccess?.();
   };
 
   return (
@@ -136,6 +146,11 @@ export function ReactHookForm() {
               {...register('image')}
             />
             <span className="file-button">Choose File</span>
+            <span className="file-name">
+              {selectedFile && selectedFile.length > 0
+                ? 'File uploaded'
+                : 'Upload a file'}
+            </span>
           </div>
           {errors.image ? (
             <p className="error">{errors.image.message}</p>

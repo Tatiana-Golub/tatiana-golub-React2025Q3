@@ -8,9 +8,15 @@ import {
   selectCountries,
   setUncontrolledFormData,
 } from '../../store/slices/formSlice';
+import { formDataToUserData } from '../../utils/dataConverter';
 
-export function UncontrolledForm() {
+interface UncontrolledFormProps {
+  onSubmitSuccess?: () => void;
+}
+
+export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
   const dispatch = useDispatch();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const countries = useSelector(selectCountries);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const nameRef = useRef<HTMLInputElement>(null);
@@ -26,6 +32,14 @@ export function UncontrolledForm() {
   const imageRef = useRef<HTMLInputElement>(null);
   const countryRef = useRef<HTMLSelectElement>(null);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+    } else {
+      setSelectedFile(null);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
@@ -36,7 +50,7 @@ export function UncontrolledForm() {
         ? 'female'
         : '';
 
-    const file = imageRef.current?.files?.[0] || null;
+    const file = imageRef.current?.files || null;
 
     const formData: IFormInput = {
       name: nameRef.current?.value || '',
@@ -47,12 +61,14 @@ export function UncontrolledForm() {
       gender,
       country: countryRef.current?.value || '',
       terms: termsRef.current?.checked || false,
-      image: file as File,
+      image: file as FileList,
     };
 
     try {
       await schema.validate(formData, { abortEarly: false });
-      dispatch(setUncontrolledFormData(formData));
+      const userData = await formDataToUserData(formData);
+      dispatch(setUncontrolledFormData(userData));
+      onSubmitSuccess?.();
     } catch (err) {
       if (err instanceof yup.ValidationError) {
         const newErrors: Record<string, string> = {};
@@ -178,9 +194,12 @@ export function UncontrolledForm() {
               id="image"
               name="image"
               accept=".png, .jpeg, .jpg"
+              onChange={handleFileChange}
             />
             <span className="file-button">Choose File</span>
-            <span className="file-name">No file chosen</span>
+            <span className="file-name">
+              {selectedFile ? 'File uploaded' : 'Upload a file'}
+            </span>
           </div>
           {errors.image ? (
             <p className="error">{errors.image}</p>
