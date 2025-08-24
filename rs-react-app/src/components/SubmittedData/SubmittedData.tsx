@@ -30,7 +30,7 @@ export function SubmittedData() {
           className={`tile ${highlight === 'uncontrolled' ? 'highlight' : ''}`}
         >
           <h3 className="data-title">Uncontrolled Form Data</h3>
-          <div className="item-container">
+          <div className="item-container" data-testid="uncontrolled-name">
             <strong>Name:</strong> {uncontrolledData.name}
           </div>
           <div className="item-container">
@@ -59,7 +59,11 @@ export function SubmittedData() {
           <div className="item-container">
             <strong>Image:</strong>{' '}
             <div className="image-preview">
-              <img src={uncontrolledData.image} alt={'user image'} />
+              <img
+                src={uncontrolledData.image}
+                alt={'user image'}
+                data-testid="uncontrolled-image"
+              />
             </div>
           </div>
         </div>
@@ -67,7 +71,7 @@ export function SubmittedData() {
       {reactHookData && (
         <div className={`tile ${highlight === 'reactHook' ? 'highlight' : ''}`}>
           <h3 className="data-title">React Hook Form Data</h3>
-          <div className="item-container">
+          <div className="item-container" data-testid="reacthook-name">
             <strong>Name:</strong> {reactHookData.name}
           </div>
           <div className="item-container">
@@ -96,7 +100,11 @@ export function SubmittedData() {
           <div className="item-container">
             <strong>Image:</strong>{' '}
             <div className="image-preview">
-              <img src={reactHookData.image} alt={'user image'} />
+              <img
+                src={reactHookData.image}
+                alt={'user image'}
+                data-testid="reacthook-image"
+              />
             </div>
           </div>
         </div>

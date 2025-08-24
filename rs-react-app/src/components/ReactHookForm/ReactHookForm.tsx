@@ -43,7 +43,9 @@ export function ReactHookForm({ onSubmitSuccess }: ReactHookFormProps) {
           <label htmlFor="name">Name</label>
           <input id="name" type="text" {...register('name')} />
           {errors.name ? (
-            <p className="error">{errors.name.message}</p>
+            <p className="error" data-testid="name-error">
+              {errors.name.message}
+            </p>
           ) : (
             <p className="error">&nbsp;</p>
           )}
@@ -63,7 +65,9 @@ export function ReactHookForm({ onSubmitSuccess }: ReactHookFormProps) {
           <label htmlFor="email">Email</label>
           <input id="email" type="email" {...register('email')} />
           {errors.email ? (
-            <p className="error">{errors.email.message}</p>
+            <p className="error" data-testid="email-error">
+              {errors.email.message}
+            </p>
           ) : (
             <p className="error">&nbsp;</p>
           )}
@@ -87,9 +91,9 @@ export function ReactHookForm({ onSubmitSuccess }: ReactHookFormProps) {
             {...register('confirmPassword')}
           />
           {errors.confirmPassword ? (
-            <p className="error">{errors.confirmPassword.message}</p>
+            <p className="password-error">{errors.confirmPassword.message}</p>
           ) : (
-            <p className="error">&nbsp;</p>
+            <p className="password-error">&nbsp;</p>
           )}
         </div>
 

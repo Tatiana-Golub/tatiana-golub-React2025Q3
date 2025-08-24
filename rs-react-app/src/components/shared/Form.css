@@ -203,3 +203,9 @@ input[type="file"] {
   margin-top: 4px;
   min-height: 1em;
 }
+
+.password-error {
+  min-height: 3rem;
+  line-height: 1.5rem;
+  color: red;
+}

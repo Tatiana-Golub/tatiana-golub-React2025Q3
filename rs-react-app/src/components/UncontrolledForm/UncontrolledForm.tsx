@@ -88,7 +88,9 @@ export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
           <label htmlFor="name">Name</label>
           <input ref={nameRef} id="name" name="name" type="text" />
           {errors.name ? (
-            <p className="error">{errors.name}</p>
+            <p className="error" data-testid="name-error">
+              {errors.name}
+            </p>
           ) : (
             <p className="error">&nbsp;</p>
           )}
@@ -104,7 +106,9 @@ export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
           <label htmlFor="email">Email</label>
           <input ref={emailRef} id="email" name="email" type="email" />
           {errors.email ? (
-            <p className="error">{errors.email}</p>
+            <p className="error" data-testid="email-error">
+              {errors.email}
+            </p>
           ) : (
             <p className="error">&nbsp;</p>
           )}
@@ -119,9 +123,11 @@ export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
             type="password"
           />
           {errors.password ? (
-            <p className="error">{errors.password}</p>
+            <p className="password-error" data-testid="password-error">
+              {errors.password}
+            </p>
           ) : (
-            <p className="error">&nbsp;</p>
+            <p className="password-error">&nbsp;</p>
           )}
         </div>
 

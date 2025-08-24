@@ -31,10 +31,23 @@ export const schema = yup.object().shape({
   password: yup
     .string()
     .required('Password is required')
-    .matches(/[0-9]/, 'Must contain a number')
-    .matches(/[a-z]/, 'Must contain a lowercase letter')
-    .matches(/[A-Z]/, 'Must contain an uppercase letter')
-    .matches(/[^a-zA-Z0-9]/, 'Must contain a special character'),
+    .test('password-strength', function (value) {
+      if (!value) return false;
+      const errors: string[] = [];
+      if (!/[0-9]/.test(value)) errors.push('number');
+      if (!/[a-z]/.test(value)) errors.push('lowercase letter');
+      if (!/[A-Z]/.test(value)) errors.push('uppercase letter');
+      if (!/[^a-zA-Z0-9]/.test(value)) errors.push('special character');
+
+      if (errors.length > 0) {
+        return this.createError({
+          message: `Password must contain ${errors.join(', ')}`,
+        });
+      }
+
+      return true;
+    }),
+
   confirmPassword: yup
     .string()
     .oneOf([yup.ref('password')], 'Passwords must match')
