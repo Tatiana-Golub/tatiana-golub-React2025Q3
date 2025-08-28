@@ -26,7 +26,7 @@ export const schema = yup.object().shape({
       originalValue === '' ? undefined : value
     )
     .required('Age required')
-    .min(0, 'Age must be non-negative'),
+    .min(1, 'Age must be greater than 0'),
   email: yup.string().required('Email is required').email('Invalid email'),
   password: yup
     .string()
