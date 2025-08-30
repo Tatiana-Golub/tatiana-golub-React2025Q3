@@ -42,7 +42,7 @@ const Row = memo(function Row({
   );
 });
 
-const VirtualizedList: React.FC<VirtualizedProps> = ({
+export const VirtualizedList: React.FC<VirtualizedProps> = ({
   countries,
   year,
   columns,
@@ -83,5 +83,3 @@ const VirtualizedList: React.FC<VirtualizedProps> = ({
     </VariableSizeList>
   );
 };
-
-export default VirtualizedList;
