@@ -1,4 +1,5 @@
 import { Country } from '../../types';
+import { HighlightedValue } from '../HighlightedData';
 import './CountryTable.css';
 
 interface Props {
@@ -9,7 +10,12 @@ interface Props {
   height?: number;
 }
 
-export const CountryTable = ({ country, columns, height = 400 }: Props) => {
+export const CountryTable = ({
+  country,
+  columns,
+  year,
+  height = 400,
+}: Props) => {
   const sortedData = [...country.data].sort((a, b) => a.year - b.year);
 
   return (
@@ -29,9 +35,16 @@ export const CountryTable = ({ country, columns, height = 400 }: Props) => {
         <tbody>
           {sortedData.map((row) => (
             <tr key={row.year}>
-              <td>{row.year}</td>
+              <td>
+                <HighlightedValue value={row.year} active={row.year === year} />
+              </td>
               {columns.map((col) => (
-                <td key={col}>{row[col] ?? 'N/A'}</td>
+                <td key={col}>
+                  <HighlightedValue
+                    value={row[col] ?? 'N/A'}
+                    active={row.year === year}
+                  />
+                </td>
               ))}
             </tr>
           ))}

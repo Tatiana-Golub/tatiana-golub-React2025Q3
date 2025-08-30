@@ -26,16 +26,46 @@ const App = () => {
   const allYears = useMemo(
     () =>
       Array.from(
-        new Set(Object.values(data)[0]?.data.map((d) => d.year) ?? [])
+        new Set(Object.values(data)[0]?.data.map((entry) => entry.year) ?? [])
       ).sort((a, b) => a - b),
     [data]
   );
 
-  const toggleColumn = useCallback((col: string) => {
+  const toggleColumn = useCallback((columnName: string) => {
     setColumns((prev) =>
-      prev.includes(col) ? prev.filter((c) => c !== col) : [...prev, col]
+      prev.includes(columnName)
+        ? prev.filter((selectedColumn) => selectedColumn !== columnName)
+        : [...prev, columnName]
     );
   }, []);
+
+  const handleYearChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setYear(Number(e.target.value));
+    },
+    []
+  );
+
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(e.target.value);
+    },
+    []
+  );
+
+  const handleSortByChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSortBy(e.target.value as 'name' | 'population');
+    },
+    []
+  );
+
+  const handleSortDirChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSortDir(e.target.value as 'asc' | 'desc');
+    },
+    []
+  );
 
   const countries = useMemo(() => {
     let countriesList = Object.values(data).filter(
@@ -76,13 +106,10 @@ const App = () => {
       <h1 className="title">CO₂ Emissions Statistics</h1>
 
       <div className="controls">
-        <select
-          value={year ?? ''}
-          onChange={(e) => setYear(Number(e.target.value))}
-        >
-          {allYears.map((y) => (
-            <option key={y} value={y}>
-              {y}
+        <select value={year ?? ''} onChange={handleYearChange}>
+          {allYears.map((yearOption) => (
+            <option key={yearOption} value={yearOption}>
+              {yearOption}
             </option>
           ))}
         </select>
@@ -91,21 +118,15 @@ const App = () => {
           type="text"
           placeholder="Search country..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={handleSearchChange}
         />
 
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as 'name' | 'population')}
-        >
+        <select value={sortBy} onChange={handleSortByChange}>
           <option value="name">Sort by Name</option>
           <option value="population">Sort by Population</option>
         </select>
 
-        <select
-          value={sortDir}
-          onChange={(e) => setSortDir(e.target.value as 'asc' | 'desc')}
-        >
+        <select value={sortDir} onChange={handleSortDirChange}>
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
