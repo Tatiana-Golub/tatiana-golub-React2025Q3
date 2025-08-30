@@ -1,0 +1,19 @@
+.country-table-container {
+  border: 1px solid #ddd;
+}
+
+.country-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.country-table th,
+.country-table td {
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  text-align: left;
+}
+
+.country-table tr.highlight {
+  background-color: #ffeeba;
+}
