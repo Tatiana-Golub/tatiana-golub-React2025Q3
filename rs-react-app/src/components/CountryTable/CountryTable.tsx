@@ -9,7 +9,7 @@ interface Props {
   height?: number;
 }
 
-export const CountryTable = ({ country, columns, height=400 }: Props) => {
+export const CountryTable = ({ country, columns, height = 400 }: Props) => {
   const sortedData = [...country.data].sort((a, b) => a.year - b.year);
 
   return (
