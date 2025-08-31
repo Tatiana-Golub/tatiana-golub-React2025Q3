@@ -1,0 +1,31 @@
+.app {
+  padding: 24px;
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  min-height: 100vh;
+}
+
+.app h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.controls select,
+.controls input {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.title {
+  text-align: center;
+}

@@ -1,0 +1,58 @@
+import { memo, useMemo } from 'react';
+import { Country } from '../../types';
+import { HighlightedValue } from '../HighlightedData';
+import './CountryTable.css';
+
+interface Props {
+  country: Country;
+  columns: string[];
+  year: number;
+  rowHeight?: number;
+  height?: number;
+}
+
+export const CountryTable = memo(function CountryTable({
+  country,
+  columns,
+  year,
+  height = 400,
+}: Props) {
+  const sortedData = useMemo(() => {
+    return [...country.data].sort((a, b) => a.year - b.year);
+  }, [country.data]);
+
+  return (
+    <div
+      className="country-table-container"
+      style={{ maxHeight: height, overflowY: 'auto' }}
+    >
+      <table className="country-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            {columns.map((col) => (
+              <th key={col}>{col.replace(/_/g, ' ')}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {sortedData.map((row) => (
+            <tr key={row.year}>
+              <td>
+                <HighlightedValue value={row.year} active={row.year === year} />
+              </td>
+              {columns.map((col) => (
+                <td key={col}>
+                  <HighlightedValue
+                    value={row[col] ?? 'N/A'}
+                    active={row.year === year}
+                  />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+});

@@ -1,0 +1,4 @@
+.highlighted {
+  background-color: #fff59d;
+  transition: background-color 0.8s ease;
+}
