@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react';
 import { Country } from '../../types';
 import { HighlightedValue } from '../HighlightedData';
 import './CountryTable.css';
@@ -10,13 +11,15 @@ interface Props {
   height?: number;
 }
 
-export const CountryTable = ({
+export const CountryTable = memo(function CountryTable({
   country,
   columns,
   year,
   height = 400,
-}: Props) => {
-  const sortedData = [...country.data].sort((a, b) => a.year - b.year);
+}: Props) {
+  const sortedData = useMemo(() => {
+    return [...country.data].sort((a, b) => a.year - b.year);
+  }, [country.data]);
 
   return (
     <div
@@ -52,4 +55,4 @@ export const CountryTable = ({
       </table>
     </div>
   );
-};
+});
