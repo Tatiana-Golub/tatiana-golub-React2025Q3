@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
 import React from 'react';
+import { ErrorBoundary } from './components/ErrorBoundary/index.ts';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -10,19 +11,21 @@ if (!rootElement) {
 }
 
 createRoot(rootElement).render(
-  <Suspense
-    fallback={
-      <div className="loading-container">
-        <div className="spinner"></div>
-        <p className="loading-text">Loading data...</p>
-      </div>
-    }
-  >
-    <React.Profiler
-      id="App"
-      onRender={(...args) => console.log('Profiler:', ...args)}
+  <ErrorBoundary>
+    <Suspense
+      fallback={
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <p className="loading-text">Loading data...</p>
+        </div>
+      }
     >
-      <App />
-    </React.Profiler>
-  </Suspense>
+      <React.Profiler
+        id="App"
+        onRender={(...args) => console.log('Profiler:', ...args)}
+      >
+        <App />
+      </React.Profiler>
+    </Suspense>
+  </ErrorBoundary>
 );
