@@ -14,6 +14,8 @@ export const HighlightedValue = ({ value, active }: HighlightedValueProps) => {
       setHighlight(true);
       const t = setTimeout(() => setHighlight(false), 20000);
       return () => clearTimeout(t);
+    } else {
+      setHighlight(false);
     }
   }, [active]);
 

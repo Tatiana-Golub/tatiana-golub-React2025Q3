@@ -8,7 +8,7 @@ import { VirtualizedList } from './components/VirtualizedList';
 const App = () => {
   const data: Record<string, Country> = resource.read();
 
-  const [year, setYear] = useState<number | undefined>(2020);
+  const [year, setYear] = useState<number>(2020);
   const [search, setSearch] = useState<string>('');
   const [sortBy, setSortBy] = useState<'name' | 'population'>('name');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
@@ -106,7 +106,7 @@ const App = () => {
       <h1 className="title">CO₂ Emissions Statistics</h1>
 
       <div className="controls">
-        <select value={year ?? ''} onChange={handleYearChange}>
+        <select value={year} onChange={handleYearChange}>
           {allYears.map((yearOption) => (
             <option key={yearOption} value={yearOption}>
               {yearOption}
@@ -140,7 +140,7 @@ const App = () => {
 
       <VirtualizedList
         countries={countries}
-        year={year ?? 0}
+        year={year ?? 2020}
         columns={columns}
       />
     </div>
