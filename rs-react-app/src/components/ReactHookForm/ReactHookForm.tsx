@@ -9,6 +9,7 @@ import {
   setReactHookFormData,
 } from '../../store/slices/formSlice';
 import { formDataToUserData } from '../../utils/dataConverter';
+import { FormError } from '../FormError';
 
 interface ReactHookFormProps {
   onSubmitSuccess?: () => void;
@@ -42,45 +43,25 @@ export function ReactHookForm({ onSubmitSuccess }: ReactHookFormProps) {
         <div className="form-group full-width">
           <label htmlFor="name">Name</label>
           <input id="name" type="text" {...register('name')} />
-          {errors.name ? (
-            <p className="error" data-testid="name-error">
-              {errors.name.message}
-            </p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.name?.message} testId="name-error" />
         </div>
 
         <div className="form-group half-width">
           <label htmlFor="age">Age</label>
           <input id="age" type="number" {...register('age')} />
-          {errors.age ? (
-            <p className="error">{errors.age.message}</p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.age?.message} />
         </div>
 
         <div className="form-group half-width">
           <label htmlFor="email">Email</label>
           <input id="email" type="email" {...register('email')} />
-          {errors.email ? (
-            <p className="error" data-testid="email-error">
-              {errors.email.message}
-            </p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.email?.message} testId="email-error" />
         </div>
 
         <div className="form-group half-width">
           <label htmlFor="password">Password</label>
           <input id="password" type="password" {...register('password')} />
-          {errors.password ? (
-            <p className="error">{errors.password.message}</p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.password?.message} />
         </div>
 
         <div className="form-group half-width">
@@ -90,11 +71,7 @@ export function ReactHookForm({ onSubmitSuccess }: ReactHookFormProps) {
             type="password"
             {...register('confirmPassword')}
           />
-          {errors.confirmPassword ? (
-            <p className="password-error">{errors.confirmPassword.message}</p>
-          ) : (
-            <p className="password-error">&nbsp;</p>
-          )}
+          <FormError message={errors.confirmPassword?.message} />
         </div>
 
         <div className="radio-group full-width">
@@ -119,11 +96,7 @@ export function ReactHookForm({ onSubmitSuccess }: ReactHookFormProps) {
               Female
             </label>
           </div>
-          {errors.gender ? (
-            <p className="error">{errors.gender.message}</p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.gender?.message} />
         </div>
 
         <div className="country-group full-width">
@@ -133,11 +106,7 @@ export function ReactHookForm({ onSubmitSuccess }: ReactHookFormProps) {
               <option key={country}>{country}</option>
             ))}
           </select>
-          {errors.country ? (
-            <p className="error">{errors.country.message}</p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.country?.message} />
         </div>
 
         <div className="form-group full-width">
@@ -151,16 +120,10 @@ export function ReactHookForm({ onSubmitSuccess }: ReactHookFormProps) {
             />
             <span className="file-button">Choose File</span>
             <span className="file-name">
-              {selectedFile && selectedFile.length > 0
-                ? 'File uploaded'
-                : 'Upload a file'}
+              {selectedFile?.length > 0 ? 'File uploaded' : 'Upload a file'}
             </span>
           </div>
-          {errors.image ? (
-            <p className="error">{errors.image.message}</p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.image?.message} />
         </div>
 
         <div className="checkbox-group">
@@ -168,11 +131,7 @@ export function ReactHookForm({ onSubmitSuccess }: ReactHookFormProps) {
             <input id="terms" type="checkbox" {...register('terms')} />
             Accept Terms & Conditions.
           </label>
-          {errors.terms ? (
-            <p className="error">{errors.terms.message}</p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.terms?.message} />
         </div>
 
         <div className="form-submit full-width">

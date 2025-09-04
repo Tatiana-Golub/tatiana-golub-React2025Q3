@@ -9,10 +9,13 @@ import {
   setUncontrolledFormData,
 } from '../../store/slices/formSlice';
 import { formDataToUserData } from '../../utils/dataConverter';
+import { FormError } from '../FormError';
 
 interface UncontrolledFormProps {
   onSubmitSuccess?: () => void;
 }
+
+type Gender = 'male' | 'female' | '';
 
 export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
   const dispatch = useDispatch();
@@ -33,22 +36,20 @@ export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
   const countryRef = useRef<HTMLSelectElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setSelectedFile(e.target.files[0]);
-    } else {
-      setSelectedFile(null);
-    }
+    setSelectedFile(e.target.files?.[0] ?? null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
 
-    const gender = genderRefs.male.current?.checked
-      ? 'male'
-      : genderRefs.female.current?.checked
-        ? 'female'
-        : '';
+    const getGender = (): Gender => {
+      if (genderRefs.male.current?.checked) return 'male';
+      if (genderRefs.female.current?.checked) return 'female';
+      return '';
+    };
+
+    const gender = getGender();
 
     const file = imageRef.current?.files || null;
 
@@ -87,31 +88,19 @@ export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
         <div className="form-group full-width">
           <label htmlFor="name">Name</label>
           <input ref={nameRef} id="name" name="name" type="text" />
-          {errors.name ? (
-            <p className="error" data-testid="name-error">
-              {errors.name}
-            </p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.name} testId="name-error" />
         </div>
 
         <div className="form-group half-width">
           <label htmlFor="age">Age</label>
           <input ref={ageRef} id="age" name="age" type="number" />
-          {errors.age && <p className="error">{errors.age}</p>}
+          <FormError message={errors.age} />
         </div>
 
         <div className="form-group half-width">
           <label htmlFor="email">Email</label>
           <input ref={emailRef} id="email" name="email" type="email" />
-          {errors.email ? (
-            <p className="error" data-testid="email-error">
-              {errors.email}
-            </p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.email} testId="email-error" />
         </div>
 
         <div className="form-group half-width">
@@ -122,13 +111,7 @@ export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
             name="password"
             type="password"
           />
-          {errors.password ? (
-            <p className="password-error" data-testid="password-error">
-              {errors.password}
-            </p>
-          ) : (
-            <p className="password-error">&nbsp;</p>
-          )}
+          <FormError message={errors.password} />
         </div>
 
         <div className="form-group half-width">
@@ -170,11 +153,7 @@ export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
               Female
             </label>
           </div>
-          {errors.gender ? (
-            <p className="error">{errors.gender}</p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.gender} />
         </div>
 
         <div className="country-group full-width">
@@ -184,11 +163,7 @@ export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
               <option key={country}>{country}</option>
             ))}
           </select>
-          {errors.counry ? (
-            <p className="error">{errors.country}</p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.country} />
         </div>
 
         <div className="form-group full-width">
@@ -207,11 +182,7 @@ export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
               {selectedFile ? 'File uploaded' : 'Upload a file'}
             </span>
           </div>
-          {errors.image ? (
-            <p className="error">{errors.image}</p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.image} />
         </div>
 
         <div className="checkbox-group">
@@ -219,11 +190,7 @@ export function UncontrolledForm({ onSubmitSuccess }: UncontrolledFormProps) {
             <input ref={termsRef} id="terms" name="terms" type="checkbox" />
             Accept Terms & Conditions.
           </label>
-          {errors.terms ? (
-            <p className="error">{errors.terms}</p>
-          ) : (
-            <p className="error">&nbsp;</p>
-          )}
+          <FormError message={errors.terms} />
         </div>
 
         <div className="form-submit full-width">
