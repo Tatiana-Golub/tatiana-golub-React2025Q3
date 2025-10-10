@@ -1,69 +1,40 @@
-# React + TypeScript + Vite
+# React – Class Components Task
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Hey there! 👋
 
-Currently, two official plugins are available:
+This is a small React project I made for the [React 2025Q3 course](https://rs.school/). The idea was to build an app using **class components only**, with a simple search feature and results from an API.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Check out the full task here:
+🔗 [Class Components Task](https://github.com/rolling-scopes-school/tasks/blob/master/react/modules/tasks/class-components.md)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## What it does
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Top section:** search input + button
+- **Bottom section:** list of results as cards
+- Fetches **initial data** on load
+- With new search makes **another API request**
+- Shows a **loader** while data is coming
+- Last search is saved in **LocalStorage** and restored on reload
+- Handles **API errors** nicely
+- Includes an **Error Boundary** + a test button to try it out
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+## Tech stuff
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- All **class components** (`extends React.Component`)
+- API calls in `componentDidMount()`
+- State via `this.state` and `this.setState()`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+---
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+## Run locally
+
+```bash
+git clone https://github.com/Tatiana-Golub/tatiana-golub-React2025Q3.git
+cd tatiana-golub-React2025Q3
+git checkout class-components
+npm install
+npm run dev
