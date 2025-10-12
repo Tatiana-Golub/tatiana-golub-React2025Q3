@@ -1,3 +1,46 @@
+# React Performance Task
+
+Hey there! 👋
+
+This is a React app I built as part of the [React 2025Q3 course](https://rs.school/).
+This task is focused on **performance optimizations** — making the app faster, smarter, and more efficient.
+
+You can check the full task here:
+🔗 [Performance Task](https://github.com/rolling-scopes-school/tasks/blob/master/react/modules/tasks/performance.md)
+
+---
+
+## What I did
+
+- Identified performance bottlenecks (unnecessary re-renders)
+- Used **React.memo**, **useMemo**, **useCallback** to avoid extra renders
+- Optimized list rendering (virtualization)
+- Ensured that state updates are as minimal as possible
+
+---
+
+## Tech & approach
+
+- `useMemo`, `useCallback` to memoize values and callbacks
+- `React.memo` for stable components
+- Using virtualization to efficiently render large tables of data
+- Profiling using React DevTools
+
+---
+
+## How to run
+
+```bash
+git clone https://github.com/Tatiana-Golub/tatiana-golub-React2025Q3.git
+cd tatiana-golub-React2025Q3
+git checkout performance
+npm install
+npm run dev
+```
+
+---
+
+
 ## Initial Performance Analysis (React Profiler)
 
 Key interactions:
